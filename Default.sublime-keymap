@@ -1,0 +1,4 @@
+[
+// custom
+  { "keys": ["ctrl+1"], "command": "extern_repl_do" },
+]
