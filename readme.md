@@ -1,19 +1,25 @@
 # Extern REPL 
+Sublime 3 Plugin to send code to active tab Console Window
 
-Sublime 3 Plugin to send contents of Editor to a Console Window
+## why
+- Works on all platforms
+- with all repls
+- simple (20 loc)
 
-currently works with [ConEmu](https://github.com/Maximus5/ConEmu)
-on Windows (7 testet)
+## requirements
+* windows: runnning [ConEmu](https://github.com/Maximus5/ConEmu)
+-Terminal and `..../<ConEmu-Dir>/ConEmu` on path
+* osx and linux: [tmux](http://tmux.sourceforge.net) started with `tmux new -s repl` (starts a new tmux session named )
 
 ## Keymap
-
 `Ctrl-1`:  sends current line to current Tab, cursor walks to next line 
 
 ## Issues
-- ConEmuC retruns error code 134
+- ConEmuC
+        build140225 returns error code 134
+        current build doesn't work
 
 ## ToDo
-
-- Support for TMUX on Linux an OSX
-- Send multiline toplevel clojure form and walk to next form
-- work with selected text
+- multiline support 
+- detection of blocks (ruby method definitions, clojure forms)
+- support selected text
