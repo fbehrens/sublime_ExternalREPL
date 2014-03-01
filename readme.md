@@ -1,5 +1,5 @@
-# Extern REPL 
-Sublime 3 Plugin to send code to active tab Console Window
+# External REPL 
+Sublime 3 Plugin to send lines of code to any REPL running in exteral Konsole
 
 ## why
 - Works on all platforms
