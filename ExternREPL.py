@@ -13,7 +13,7 @@ class ExternReplDo(sublime_plugin.TextCommand):
             line_below = sublime.Region(line.b+1)
             self.view.sel().clear()
             self.view.sel().add(line_below)
-            command = s.get("con_emu_c") + ' -GuiMacro:0 Paste(0,"' + line_contents + '\\n") /C'
+            command = s.get("con_emu_c") + ' -GuiMacro:0 Paste(0,"' + line_contents + '\\n")'
             return_code = subprocess.call(command)
             print(return_code)
         # else:
