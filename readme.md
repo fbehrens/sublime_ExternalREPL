@@ -14,6 +14,6 @@ on Windows (7 testet)
 
 ## ToDo
 
-- Quote `"` as `\"`
 - Support for TMUX on Linux an OSX
 - Send multiline toplevel clojure form and walk to next form
+- work with selected text
