@@ -23,3 +23,6 @@ Sublime 3 Plugin to send code to active tab Console Window
 - multiline support 
 - detection of blocks (ruby method definitions, clojure forms)
 - support selected text
+
+## License
+MIT
