@@ -1,23 +1,22 @@
 # External REPL 
-Sublime 3 Plugin to send lines of code to any REPL running in exteral Konsole
+Sublime 3 Plugin to send lines of code to any REPL running in exteral Console.
+Works on Windows with ConEmu and on OSX/Linux with tmux
 
 ## why
+- simple (20 loc)
 - Works on all platforms
 - with all repls
-- simple (20 loc)
 
 ## requirements
 * windows: runnning [ConEmu](https://github.com/Maximus5/ConEmu)
 -Terminal and `..../<ConEmu-Dir>/ConEmu` on path
-* osx and linux: [tmux](http://tmux.sourceforge.net) started with `tmux new -s repl` (starts a new tmux session named )
+* osx and linux: [tmux](http://tmux.sourceforge.net) started with `tmux new -s repl` (starts a new tmux named session)
 
 ## Keymap
-`Ctrl-1`:  sends current line to current Tab, cursor walks to next line 
+`ctrl-shift-enter`:  sends current line to external REPL, cursor walks to next line 
 
 ## Issues
-- ConEmuC
-        build140225 returns error code 134
-        current build doesn't work
+- ConEmuC sends keys not to the active but the first editor (can have only one repl)
 
 ## ToDo
 - multiline support 

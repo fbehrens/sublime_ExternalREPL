@@ -1,0 +1,7 @@
+
+0.0.3
+  change hotkey to ctrl+shift+enter
+  add changelog
+0.0.2 
+  change Title and Description
+0.0.1
