@@ -1,4 +1,4 @@
 [
-// custom
   { "keys": ["ctrl+shift+enter"], "command": "extern_repl_do" },
+  { "keys": ["ctrl+shift+s"], "command": "extern_repl_repeat" },
 ]

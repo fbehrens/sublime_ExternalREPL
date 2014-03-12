@@ -13,7 +13,8 @@ Works on Windows with ConEmu and on OSX/Linux with tmux
 * osx and linux: [tmux](http://tmux.sourceforge.net) started with `tmux new -s repl` (starts a new tmux named session)
 
 ## Keymap
-`ctrl-shift-enter`:  sends current line to external REPL, cursor walks to next line 
+* `ctrl-shift-enter`: sends current line to external REPL, cursor walks to next line 
+* `ctrl-shift-s`: sends up-arrow and return to external REPL (Windows only) 
 
 ## Issues
 - ConEmuC sends keys not to the active but the first editor (can have only one repl)

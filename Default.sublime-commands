@@ -1,3 +1,4 @@
 [
-   { "caption": "Extern REPL: send line", "command": "extern_repl_do" }
+   { "caption": "Extern REPL: send line", "command": "extern_repl_do" },
+   { "caption": "Extern REPL: repeat",    "command": "extern_repl_repeat" }
 ]

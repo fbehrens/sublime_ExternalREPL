@@ -28,3 +28,8 @@ class ExternReplDo(sublime_plugin.TextCommand):
                 print(return_value)
             # else:
         #     print("Not Implemente yet: " + self.view.substr(region))
+
+class ExternReplRepeat(sublime_plugin.TextCommand):
+    def run(self, edit):
+        self.view.run_command("save")
+        Popen('ConEmuC -GuiMacro:0 Keys("Up");Paste(0,"\\n")')
