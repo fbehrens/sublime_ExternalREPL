@@ -9,13 +9,14 @@ echo \\
 """
 class ExternReplDo(sublime_plugin.TextCommand):
     def repl_command(self, text):
+        quoted = text.replace('\\','\\\\').replace('"','\\"')
         if sublime.platform() == 'windows':
-            command = 'ConEmuC -GuiMacro:0 Paste(0,"' + text + '\\n")'
+            command = 'ConEmuC -GuiMacro:0 Paste(0,"' + quoted + '\\n")'
             print("Command= " + command)
             return Popen(command)
         else:
             # Multiline with tmux needs multiple commands
-            command = 'tmux send-keys -t repl "' + text + '" C-m'
+            command = 'tmux send-keys -t repl "' + quoted + '" C-m'
             print("Command= " + command)
             return Popen(command,shell=True)
 
@@ -24,14 +25,13 @@ class ExternReplDo(sublime_plugin.TextCommand):
             if region.empty():
                 line = self.view.line(region)
                 line_contents = self.view.substr(line)
-                quoted = line_contents.replace('\\','\\\\').replace('"','\\"')
                 # print( repr( quoted ))
                 line_below = sublime.Region(line.b+1)
                 self.view.sel().clear()
                 self.view.sel().add(line_below)
-                self.repl_command( quoted )
-            # else:
-        #     print("Not Implemente yet: " + self.view.substr(region))
+                self.repl_command( line_contents )
+            else:
+                self.repl_command( self.view.substr(region) )
 
 class ExternReplRepeat(sublime_plugin.TextCommand):
     def run(self, edit):
