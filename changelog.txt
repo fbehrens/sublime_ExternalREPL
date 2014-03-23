@@ -1,4 +1,6 @@
-
+0.0.4
+  `ctrl-shift-l`: sends last command to external REPL (Windows only)
+  `ctrl-shift-s`: sends up-arrow and return to external REPL (Windows only) 
 0.0.3
   change hotkey to ctrl+shift+enter
   add changelog

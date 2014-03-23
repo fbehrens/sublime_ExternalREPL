@@ -1,4 +1,5 @@
 [
    { "caption": "Extern REPL: send line", "command": "extern_repl_do" },
-   { "caption": "Extern REPL: repeat",    "command": "extern_repl_repeat" }
+   { "caption": "Extern REPL: last command from repl",    "command": "extern_repl_repeat" },
+   { "caption": "Extern REPL: last command from sublime", "command": "extern_repl_last" },
 ]

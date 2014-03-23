@@ -9,6 +9,8 @@ echo \\
 """
 class ExternReplDo(sublime_plugin.TextCommand):
     def repl_command(self, text):
+        s = sublime.load_settings("ExternalRepl.last-run")
+        s.set("last-text", text)
         quoted = text.replace('\\','\\\\').replace('"','\\"')
         if sublime.platform() == 'windows':
             command = 'ConEmuC -GuiMacro:0 Paste(0,"' + quoted + '\\n")'
@@ -37,3 +39,8 @@ class ExternReplRepeat(sublime_plugin.TextCommand):
     def run(self, edit):
         self.view.run_command("save")
         Popen('ConEmuC -GuiMacro:0 Keys("Up");Paste(0,"\\n")')
+
+class ExternReplLast(sublime_plugin.TextCommand):
+    def run(self, edit):
+        s = sublime.load_settings("ExternalRepl.last-run")
+        ExternReplDo.repl_command(self, s.get("last-text"))
