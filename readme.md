@@ -17,13 +17,13 @@ Works on Windows with ConEmu and on OSX/Linux with tmux
 * `ctrl-shift-l(deactivated)`: sends last command to external REPL (Windows only)
 * `ctrl-shift-s`: sends up-arrow and return to external REPL
 
-## Issues
-- ConEmuC sends keys not to the active but the first editor (can have only one repl)
-
 ## ToDo
-- multiline support 
 - detection of blocks (ruby method definitions, clojure forms)
-- support selected text
+
+## Release
+`git tag`
+`git tag 0.0.5`
+`git push origin 0.0.5`
 
 ## License
 MIT
