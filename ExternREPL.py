@@ -11,7 +11,10 @@ class ExternReplDo(sublime_plugin.TextCommand):
     def repl_command(self, text):
         s = sublime.load_settings("ExternalRepl.last-run")
         s.set("last-text", text)
-        quoted = text.replace('\\','\\\\').replace('"','\\"')
+        # \ => \\ | " => \" | remove \n
+        quoted = text.replace('\\','\\\\')\
+                     .replace('"','\\"')\
+                     .replace('\n','')
         if sublime.platform() == 'windows':
             command = 'ConEmuC -GuiMacro:0 Paste(0,"' + quoted + '\\n")'
             print("Command= " + command)
