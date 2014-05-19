@@ -15,7 +15,7 @@ Works on Windows with ConEmu and on OSX/Linux with tmux
 ## Keymap
 * `ctrl-shift-enter`: sends current line to external REPL, cursor walks to next line 
 * `ctrl-shift-l(deactivated)`: sends last command to external REPL (Windows only)
-* `ctrl-shift-s`: sends up-arrow and return to external REPL (Windows only) 
+* `ctrl-shift-s`: sends up-arrow and return to external REPL
 
 ## Issues
 - ConEmuC sends keys not to the active but the first editor (can have only one repl)

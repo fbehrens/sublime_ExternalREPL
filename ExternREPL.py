@@ -41,7 +41,13 @@ class ExternReplDo(sublime_plugin.TextCommand):
 class ExternReplRepeat(sublime_plugin.TextCommand):
     def run(self, edit):
         self.view.run_command("save")
-        Popen('ConEmuC -GuiMacro:0 Keys("Up");Paste(0,"\\n")')
+        if sublime.platform() == 'windows':
+            Popen('ConEmuC -GuiMacro:0 Keys("Up");Paste(0,"\\n")')
+        else:
+            command= 'tmux send-keys -t repl Up C-m'
+            print("Command = " + command)
+            return Popen(command,shell=True)
+
 
 class ExternReplLast(sublime_plugin.TextCommand):
     def run(self, edit):
