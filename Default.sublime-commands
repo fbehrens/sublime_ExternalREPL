@@ -2,4 +2,7 @@
    { "caption": "Extern REPL: send line", "command": "extern_repl_do" },
    { "caption": "Extern REPL: last command from repl",    "command": "extern_repl_repeat" },
    { "caption": "Extern REPL: last command from sublime", "command": "extern_repl_last" },
+   { "caption": "Extern REPL: Test Powershell File", "command": "extern_repl_test" },
+   { "caption": "Extern REPL: Test Powershell describe block", "command": "extern_repl_test_one" },
+   { "caption": "Extern REPL: Run Command from History", "command": "extern_repl_history" },
 ]
