@@ -7,20 +7,22 @@ echo 'ho'
 echo \\
 """
 
-def append_to_history(text):
+def append_to_history(text,path):
     def remove_dublicates(seq):
         "while retaining order"
         seen = set()
         seen_add = seen.add
         return [ x for x in seq if x not in seen and not seen_add(x)]
     s = sublime.load_settings("ExternalRepl.last-run")
-    history = s.get("history")
+    historys = s.get("historys") or {}
+    history  = historys.get(path) or []
     history.insert(0,text) # prepend
-    s.set("history", remove_dublicates(history)[:9])
+    historys[path] = remove_dublicates(history)[:9]
+    s.set("historys", historys)
     sublime.save_settings("ExternalRepl.last-run")
 
-def repl_command(text):
-    append_to_history(text)
+def repl_command(text,path):
+    append_to_history(text,path)
     # \ => \\ | " => \" | remove \n
     quoted = text.replace('\\','\\\\')\
                  .replace('"','\\"')\
@@ -45,9 +47,9 @@ class ExternReplDo(sublime_plugin.TextCommand):
                 line_below = sublime.Region(line.b+1)
                 self.view.sel().clear()
                 self.view.sel().add(line_below)
-                repl_command( line_contents )
+                repl_command( line_contents,"Do" )
             else:
-                repl_command( self.view.substr(region) )
+                repl_command( self.view.substr(region),"Do")
 
 class ExternReplRepeat(sublime_plugin.TextCommand):
     def run(self, edit):
@@ -62,38 +64,37 @@ class ExternReplRepeat(sublime_plugin.TextCommand):
 class ExternReplLoad(sublime_plugin.TextCommand):
     def run(self, edit):
         self.view.run_command("save")
-        _, path = folder_path( sublime.active_window().folders(), \
-                               self.view.file_name())
-        repl_command(clj_load(path))
+        set_path_file(self)
+        repl_command(clj_load(self.file),self.path)
 
 class ExternReplTest(sublime_plugin.TextCommand):
     "Runs the Current File"
     def run(self, edit):
         self.view.run_command("save")
-        _, path = folder_path( sublime.active_window().folders(), \
-                               self.view.file_name())
-        repl_command(powershell_test(path))
+        set_path_file(self)
+        repl_command(powershell_test(self.file),self.path)
 
 class ExternReplTestOne(sublime_plugin.TextCommand):
     "runs the selected tests"
     def run(self, edit):
         self.view.run_command("save")
-        _, path = folder_path( sublime.active_window().folders(), \
-                               self.view.file_name())
-        repl_command(powershell_test_one(path,selected_testnames(self)))
+        set_path_file(self)
+        repl_command(powershell_test_one(self.file,selected_testnames(self)),self.path)
 
 class ExternReplHistory(sublime_plugin.TextCommand):
     "runs the command from the history"
     def run(self, edit):
-        self.history = sublime.load_settings("ExternalRepl.last-run").get("history")
+        set_path_file(self)
+        self.history = sublime.load_settings("ExternalRepl.last-run").get("historys")[self.path]
         self.view.window().show_quick_panel(self.history, self.select )
+        print("path", self.file)
     def select(self, x):
-        repl_command(self.history[x])
+        repl_command(self.history[x],self.path)
 
-def folder_path(folders,path):
-    "split path according to current folders"
-    folder = [f for f in folders if path.startswith(f)][0]
-    return [folder, path[len(folder)+1:] ]
+def set_path_file(self):
+    file_name = self.view.file_name()
+    self.path = [f for f in sublime.active_window().folders() if file_name.startswith(f)][0] # project directory
+    self.file = file_name[len(self.path)+1:]
 
 def clj_load(path):
     return '(load-file "' + path.replace("\\","/") + '")'
