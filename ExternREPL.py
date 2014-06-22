@@ -37,7 +37,8 @@ def repl_command(text,path):
         print("Command= " + command)
         return Popen(command,shell=True)
 
-class ExternReplDo(sublime_plugin.TextCommand):
+class ExternReplLine(sublime_plugin.TextCommand):
+    "send current Line or selection"
     def run(self, edit):
         for region in self.view.sel():
             if region.empty():
@@ -51,7 +52,8 @@ class ExternReplDo(sublime_plugin.TextCommand):
             else:
                 repl_command( self.view.substr(region),"Do")
 
-class ExternReplRepeat(sublime_plugin.TextCommand):
+class ExternReplUp(sublime_plugin.TextCommand):
+    "sends up arrow"
     def run(self, edit):
         self.view.run_command("save")
         if sublime.platform() == 'windows':
@@ -61,40 +63,53 @@ class ExternReplRepeat(sublime_plugin.TextCommand):
             print("Command = " + command)
             return Popen(command,shell=True)
 
+class ExternReplLast(sublime_plugin.TextCommand):
+    "sends last command from History"
+    def run(self, edit):
+        self.view.run_command("save")
+
 class ExternReplLoad(sublime_plugin.TextCommand):
     def run(self, edit):
         self.view.run_command("save")
-        set_path_file(self)
-        repl_command(clj_load(self.file),self.path)
+        init_er(self)
+        repl_command(clj_load(self.er.file),self.er.path)
+
+#class ExternReplCommand(sublime_plugin.TextCommand):
+#    def __init__(self,args):
+#        super().__init__(self,args)
 
 class ExternReplTest(sublime_plugin.TextCommand):
-    "Runs the Current File"
+    "runs the Current Test File"
     def run(self, edit):
         self.view.run_command("save")
-        set_path_file(self)
-        repl_command(powershell_test(self.file),self.path)
+        init_er(self)
+        repl_command(powershell_test(self.er.file),self.er.path)
 
 class ExternReplTestOne(sublime_plugin.TextCommand):
     "runs the selected tests"
     def run(self, edit):
         self.view.run_command("save")
-        set_path_file(self)
-        repl_command(powershell_test_one(self.file,selected_testnames(self)),self.path)
+        init_er(self)
+        repl_command(powershell_test_one(self.er.file,selected_testnames(self)),self.er.path)
 
 class ExternReplHistory(sublime_plugin.TextCommand):
     "runs the command from the history"
     def run(self, edit):
-        set_path_file(self)
-        self.history = sublime.load_settings("ExternalRepl.last-run").get("historys")[self.path]
+        init_er(self)
+        histories = sublime.load_settings("ExternalRepl.last-run").get("historys") or {}
+        self.history = histories.get(self.er.path) or ["null"]
         self.view.window().show_quick_panel(self.history, self.select )
-        print("path", self.file)
     def select(self, x):
-        repl_command(self.history[x],self.path)
+        repl_command(self.history[x],self.er.path)
 
-def set_path_file(self):
-    file_name = self.view.file_name()
-    self.path = [f for f in sublime.active_window().folders() if file_name.startswith(f)][0] # project directory
-    self.file = file_name[len(self.path)+1:]
+class Er:
+    def __init__(self,stc):
+        file_name = stc.view.file_name()
+        self.path = [f for f in sublime.active_window().folders() if file_name.startswith(f)][0] # project directory
+        self.file = file_name[len(self.path)+1:]
+
+def init_er(self):
+    self.er = Er(self)
 
 def clj_load(path):
     return '(load-file "' + path.replace("\\","/") + '")'
