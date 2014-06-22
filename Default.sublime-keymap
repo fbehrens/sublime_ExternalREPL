@@ -1,7 +1,7 @@
 [
   { "keys": ["ctrl+shift+enter"], "command": "extern_repl_line" },
-  { "keys": ["ctrl+shift+s"    ], "command": "extern_repl_up" },
-  { "keys": ["ctrl+shift+r"    ], "command": "extern_repl_last" },
+  { "keys": ["ctrl+alt+s"      ], "command": "extern_repl_up" },
+  { "keys": ["ctrl+shift+s"    ], "command": "extern_repl_last" },
   { "keys": ["ctrl+shift+l"    ], "command": "extern_repl_load" },
   { "keys": ["ctrl+shift+t"    ], "command": "extern_repl_test"},
   { "keys": ["ctrl+shift+o"    ], "command": "extern_repl_test_one"},
