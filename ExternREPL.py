@@ -1,11 +1,5 @@
 import sublime, sublime_plugin
 from subprocess import Popen
-"""
-echo "hi"
-echo 'ho'
-1 + 1
-echo \\
-"""
 
 class ExternReplLine(sublime_plugin.TextCommand):
     "send current Line or selection"
@@ -139,17 +133,16 @@ class Er:
         self.history.append(command)
         # \ => \\ | " => \" | remove \n
         quoted = command.replace('\\','\\\\')\
-                     .replace('"','\\"')\
-                     .replace('\n','')
+                     .replace('"','\\"')
         if sublime.platform() == 'windows':
             command = 'ConEmuC -GuiMacro:0 Paste(0,"' + quoted + '\\n")'
             print("Command= " + command)
             return Popen(command)
         else:
             # Multiline with tmux needs multiple commands
-            command = 'tmux send-keys -t repl "' + quoted + '" C-m'
-            print("Command= " + command)
-            return Popen(command,shell=True)
+            for line in quoted.split('\n'):
+                command = 'tmux send-keys -t repl "' + line + '" C-m'
+                Popen(command,shell=True)
 
 def init_er(self):
     self.er = Er(self)
