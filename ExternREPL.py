@@ -97,7 +97,11 @@ class Er:
         self.history = History(self.path)
         scopes = view.scope_name(view.sel()[0].begin()) # source.python meta.structure.list.python punctuation.definition.list.begin.python
         langs = ["python","powershell","ruby","clojure"]
-        lang = [l for l in langs if l in scopes][0]
+        match = [l for l in langs if l in scopes]
+        if match:
+            lang = match[0]
+        else:
+            lang = "unknown"
         if lang == "powershell":
             self.load = '. .\\' + self.file
             self.test = 'invoke-pester ' + self.file
