@@ -30,13 +30,14 @@ class ExternReplUp(sublime_plugin.TextCommand):
 class ExternReplLast(sublime_plugin.TextCommand):
     "sends last command from History"
     def run(self, edit):
-        self.view.run_command("save_all")
+        self.view.run_command("save")
         init_er(self)
         self.er.command(self.er.history.entries[0])
+        print("last")
 
 class ExternReplLoad(sublime_plugin.TextCommand):
     def run(self, edit):
-        self.view.run_command("save_all")
+        self.view.run_command("save")
         init_er(self)
         self.er.command(self.er.load)
 
@@ -47,7 +48,7 @@ class ExternReplLoad(sublime_plugin.TextCommand):
 class ExternReplTest(sublime_plugin.TextCommand):
     "runs the Current Test File"
     def run(self, edit):
-        self.view.run_command("save_all")
+        self.view.run_command("save")
         init_er(self)
         self.er.command(self.er.test)
 
