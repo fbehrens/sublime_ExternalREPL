@@ -71,7 +71,7 @@ class Er:
             "powershell": {
                 "load":              lambda: '. .\\' + self.file,
                 "test":              lambda: 'invoke-pester ' + self.file,
-                "test_one_pattern":  """^\s*describe\s+(?:'|")(.*)(?:'|")\s*\{\s*$""",
+                "test_one_pattern":  """^\s*(?:d|D)escribe\s+(?:'|")(.*)(?:'|")\s*\{\s*$""",
                 "test_one":          lambda: 'invoke-pester ' + self.file + ' -testname ' + ' '.join(self.selected_testnames())
             },
             "clojure": {
