@@ -1,21 +1,6 @@
 import sublime, sublime_plugin
 from subprocess import Popen
 
-class ExternReplLine(sublime_plugin.TextCommand):
-    "send current Line or selection"
-    def run(self, edit):
-        init_er(self)
-        for region in self.view.sel():
-            if region.empty():
-                line = self.view.line(region)
-                line_contents = self.view.substr(line)
-                line_below = sublime.Region(line.b+1)
-                self.view.sel().clear()
-                self.view.sel().add(line_below)
-                self.er.command( line_contents )
-            else:
-                self.er.command( self.view.substr(region))
-
 class ExternReplUp(sublime_plugin.TextCommand):
     "sends up arrow"
     def run(self, edit):
@@ -86,7 +71,8 @@ class Er:
 
         self.ops = {
             "cd":       lambda: "cd " + self.path,
-            "explorer": lambda: "explorer " + self.path
+            "explorer": lambda: "explorer " + self.path,
+            "line":     lambda: self.line()
         }
         self.ops_lang = {
             "powershell": {
@@ -104,6 +90,19 @@ class Er:
             "python": {
             },
         }
+
+    def line(self):
+        view = self.stc.view
+        for region in view.sel():
+            if region.empty():
+                line = view.line(region)
+                line_contents = view.substr(line)
+                line_below = sublime.Region(line.b+1)
+                view.sel().clear()
+                view.sel().add(line_below)
+                return line_contents
+            else:
+                return view.substr(region)
 
     def ops_get(self,operation):
         return self.ops.get(operation) or self.ops_lang.get(self.lang).get(operation)
