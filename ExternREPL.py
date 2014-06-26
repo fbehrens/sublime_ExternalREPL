@@ -61,12 +61,6 @@ class Er:
         self.lang = "unknown"
         if match:    self.lang = match[0]
 
-        self.ops = {
-            "cd":       lambda: "cd " + self.path,
-            "explorer": lambda: "explorer " + self.path,
-            "line":     lambda: self.line(),
-            "last":     lambda: self.history.entries[0]
-        }
         self.ops_lang = {
             "powershell": {
                 "load":              lambda: '. .\\' + self.file,
@@ -83,6 +77,21 @@ class Er:
             "python": {
             },
         }
+        self.ops_platform = {
+            "windows": {
+                "cd":       lambda: "cd " + self.path,
+                "explorer": lambda: "explorer " + self.path,
+            }
+        }
+        self.ops = {
+            "line":     lambda: self.line(),
+            "last":     lambda: self.history.entries[0]
+        }
+
+    def ops_get(self,operation):
+        return self.ops_lang.get(self.lang).get(operation) \
+            or self.ops_platform.get(sublime.platform()).get(operation) \
+            or self.ops.get(operation)
 
     def line(self):
         for region in self.view.sel():
@@ -95,9 +104,6 @@ class Er:
                 return line_contents
             else:
                 return self.view.substr(region)
-
-    def ops_get(self,operation):
-        return self.ops.get(operation) or self.ops_lang.get(self.lang).get(operation)
 
     def testnames(self):
         "( (region, 'name'),... )"
@@ -122,11 +128,10 @@ class Er:
         self.history.append(command)
         # \ => \\ | " => \" | remove \n
         quoted = command.replace('\\','\\\\')\
-                     .replace('"','\\"')
+                        .replace('"','\\"')
         if sublime.platform() == 'windows':
             command = 'ConEmuC -GuiMacro:0 Paste(0,"' + quoted + '\\n")'
-            print("Command= " + command)
-            return Popen(command)
+            Popen(command)
         else:
             # Multiline with tmux needs multiple commands
             for line in quoted.split('\n'):
@@ -135,3 +140,4 @@ class Er:
 
 def init_er(self):
     self.er = Er(self)
+
