@@ -49,12 +49,12 @@ class History:
 class Er:
     def __init__(self,stc):
         self.stc  = stc
-        view      = stc.view
-        file_name = view.file_name()
+        self.view = stc.view
+        file_name = self.view.file_name()
         self.path = [f for f in sublime.active_window().folders() if file_name.startswith(f)][0] # project directory
         self.file = file_name[len(self.path)+1:]
         self.history = History(self.path)
-        scopes = view.scope_name(view.sel()[0].begin()) # source.python meta.structure.list.python punctuation.definition.list.begin.python
+        scopes = self.view.scope_name(self.view.sel()[0].begin()) # source.python meta.structure.list.python punctuation.definition.list.begin.python
         langs = ["python","powershell","ruby","clojure"]
         match = [l for l in langs if l in scopes]
 
@@ -85,17 +85,16 @@ class Er:
         }
 
     def line(self):
-        view = self.stc.view
-        for region in view.sel():
+        for region in self.view.sel():
             if region.empty():
-                line = view.line(region)
-                line_contents = view.substr(line)
+                line = self.view.line(region)
+                line_contents = self.view.substr(line)
                 line_below = sublime.Region(line.b+1)
-                view.sel().clear()
-                view.sel().add(line_below)
+                self.view.sel().clear()
+                self.view.sel().add(line_below)
                 return line_contents
             else:
-                return view.substr(region)
+                return self.view.substr(region)
 
     def ops_get(self,operation):
         return self.ops.get(operation) or self.ops_lang.get(self.lang).get(operation)
@@ -103,9 +102,9 @@ class Er:
     def testnames(self):
         "( (region, 'name'),... )"
         testnames = []
-        regions = self.stc.view.find_all(self.ops_get("test_one_pattern"),fmt="$1",extractions=testnames)
+        regions = self.view.find_all(self.ops_get("test_one_pattern"),fmt="$1",extractions=testnames)
         regions[0].a  = 0
-        regions[-1].b = self.stc.view.size()
+        regions[-1].b = self.view.size()
         for i,region in enumerate(regions[:-1]):
             region.b = regions[i+1].a
         return [ (region, testnames.pop(0)) for region in regions]
@@ -114,7 +113,7 @@ class Er:
         "list of testnames"
         acc = []
         for region, testname in self.testnames():
-            for s in self.stc.view.sel():
+            for s in self.view.sel():
                 if s.intersects(region):
                     acc.append( testname )
         return acc
