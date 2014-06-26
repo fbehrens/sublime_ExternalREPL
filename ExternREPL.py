@@ -84,13 +84,13 @@ class Er:
             }
         }
         self.ops = {
-            "line":     lambda: self.line(),
-            "last":     lambda: self.history.entries[0]
+                "line":     lambda: self.line(),
+                "last":     lambda: self.history.entries[0]
         }
 
     def ops_get(self,operation):
-        return self.ops_lang.get(self.lang).get(operation) \
-            or self.ops_platform.get(sublime.platform()).get(operation) \
+        return self.ops_lang.get(self.lang,{}).get(operation) \
+            or self.ops_platform.get(sublime.platform(),{}).get(operation) \
             or self.ops.get(operation)
 
     def line(self):
@@ -140,4 +140,3 @@ class Er:
 
 def init_er(self):
     self.er = Er(self)
-
