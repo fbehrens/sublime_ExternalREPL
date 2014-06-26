@@ -1,11 +1,13 @@
 [
-  { "keys": ["ctrl+shift+enter"], "command": "extern_repl_line" },
-  { "keys": ["ctrl+alt+s"      ], "command": "extern_repl_up" },
-  { "keys": ["ctrl+shift+s"    ], "command": "extern_repl_last" },
-  { "keys": ["ctrl+shift+l"    ], "command": "extern_repl_load" },
-  { "keys": ["ctrl+shift+t"    ], "command": "extern_repl_test"},
-  { "keys": ["ctrl+shift+o"    ], "command": "extern_repl_test_one"},
-  { "keys": ["ctrl+shift+h"    ], "command": "extern_repl_history" },
+  { "keys": ["ctrl+shift+c"],"command": "extern_repl_ops" ,"args": {"what": "cd"}},
+  { "keys": ["ctrl+shift+1"],"command": "extern_repl_ops" ,"args": {"what": "explorer"}},
+  { "keys": ["ctrl+shift+t"],"command": "extern_repl_ops" ,"args": {"what": "test"}},
+  { "keys": ["ctrl+shift+l"],"command": "extern_repl_ops" ,"args": {"what": "load"}},
+  { "keys": ["ctrl+shift+o"],"command": "extern_repl_ops" ,"args": {"what": "test_one"}},
 
-  { "keys": ["ctrl+1"],"command": "extern_repl_test1"},
-]
+  { "keys": ["ctrl+shift+enter"], "command": "extern_repl_line" },
+  { "keys": ["ctrl+up"         ], "command": "extern_repl_up" },
+
+  { "keys": ["ctrl+shift+s"    ], "command": "extern_repl_last" },
+  { "keys": ["ctrl+shift+h"    ], "command": "extern_repl_history" },
+ ]

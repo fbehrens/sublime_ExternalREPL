@@ -19,7 +19,7 @@ class ExternReplLine(sublime_plugin.TextCommand):
 class ExternReplUp(sublime_plugin.TextCommand):
     "sends up arrow"
     def run(self, edit):
-        self.view.run_command("save_all")
+        self.view.run_command("save")
         if sublime.platform() == 'windows':
             Popen('ConEmuC -GuiMacro:0 Keys("Up");Paste(0,"\\n")')
         else:
@@ -35,29 +35,10 @@ class ExternReplLast(sublime_plugin.TextCommand):
         self.er.command(self.er.history.entries[0])
         print("last")
 
-class ExternReplLoad(sublime_plugin.TextCommand):
-    def run(self, edit):
-        self.view.run_command("save")
+class ExternReplOps(sublime_plugin.TextCommand):
+    def run(self, edit, what):
         init_er(self)
-        self.er.command(self.er.load)
-
-#class ExternReplCommand(sublime_plugin.TextCommand):
-#    def __init__(self,args):
-#        super().__init__(self,args)
-
-class ExternReplTest(sublime_plugin.TextCommand):
-    "runs the Current Test File"
-    def run(self, edit):
-        self.view.run_command("save")
-        init_er(self)
-        self.er.command(self.er.test)
-
-class ExternReplTestOne(sublime_plugin.TextCommand):
-    "runs the selected tests"
-    def run(self, edit):
-        self.view.run_command("save_all")
-        init_er(self)
-        self.er.command(self.er.test_one(self.er.selected_testnames()))
+        self.er.command(self.er.ops_get(what)())
 
 class ExternReplHistory(sublime_plugin.TextCommand):
     "runs the command from the history"
@@ -99,26 +80,38 @@ class Er:
         scopes = view.scope_name(view.sel()[0].begin()) # source.python meta.structure.list.python punctuation.definition.list.begin.python
         langs = ["python","powershell","ruby","clojure"]
         match = [l for l in langs if l in scopes]
-        if match:
-            lang = match[0]
-        else:
-            lang = "unknown"
-        if lang == "powershell":
-            self.load = '. .\\' + self.file
-            self.test = 'invoke-pester ' + self.file
-            self.test_one_pattern = """^\s*describe\s+(?:'|")(.*)(?:'|")\s*\{\s*$"""
-            self.test_one = lambda testnames: 'invoke-pester ' + self.file + ' -testname ' + ' '.join(testnames)
-        elif lang == "python":
-            pass
-        elif lang == "clojure":
-            self.load = '(load-file "' + path.replace("\\","/") + '")'
-        elif lang == "ruby":
-            self.test_one_pattern = """^\s*it\s+(?:'|")(.*)(?:'|")\s+do\s*$"""
+
+        self.lang = "unknown"
+        if match:    self.lang = match[0]
+
+        self.ops = {
+            "cd":       lambda: "cd " + self.path,
+            "explorer": lambda: "explorer " + self.path
+        }
+        self.ops_lang = {
+            "powershell": {
+                "load":              lambda: '. .\\' + self.file,
+                "test":              lambda: 'invoke-pester ' + self.file,
+                "test_one_pattern":  """^\s*describe\s+(?:'|")(.*)(?:'|")\s*\{\s*$""",
+                "test_one":          lambda: 'invoke-pester ' + self.file + ' -testname ' + ' '.join(self.selected_testnames())
+            },
+            "clojure": {
+                "load":              lambda: '(load-file "' + path.replace("\\","/") + '")'
+            },
+            "ruby": {
+                "test_one_pattern": """^\s*it\s+(?:'|")(.*)(?:'|")\s+do\s*$"""
+            },
+            "python": {
+            },
+        }
+
+    def ops_get(self,operation):
+        return self.ops.get(operation) or self.ops_lang.get(self.lang).get(operation)
 
     def testnames(self):
         "( (region, 'name'),... )"
         testnames = []
-        regions = self.stc.view.find_all(self.test_one_pattern,fmt="$1",extractions=testnames)
+        regions = self.stc.view.find_all(self.ops_get("test_one_pattern"),fmt="$1",extractions=testnames)
         regions[0].a  = 0
         regions[-1].b = self.stc.view.size()
         for i,region in enumerate(regions[:-1]):
