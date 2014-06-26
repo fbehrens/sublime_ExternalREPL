@@ -5,9 +5,9 @@
   { "keys": ["ctrl+shift+l"],"command": "extern_repl_ops" ,"args": {"what": "load"}},
   { "keys": ["ctrl+shift+o"],"command": "extern_repl_ops" ,"args": {"what": "test_one"}},
   { "keys": ["ctrl+shift+enter"],"command": "extern_repl_ops" ,"args": {"what": "line"}},
+  { "keys": ["ctrl+shift+s"],"command": "extern_repl_ops" ,"args": {"what": "last"}},
 
   { "keys": ["ctrl+up"         ], "command": "extern_repl_up" },
 
-  { "keys": ["ctrl+shift+s"    ], "command": "extern_repl_last" },
   { "keys": ["ctrl+shift+h"    ], "command": "extern_repl_history" },
  ]

@@ -12,14 +12,6 @@ class ExternReplUp(sublime_plugin.TextCommand):
             print("Command = " + command)
             return Popen(command,shell=True)
 
-class ExternReplLast(sublime_plugin.TextCommand):
-    "sends last command from History"
-    def run(self, edit):
-        self.view.run_command("save")
-        init_er(self)
-        self.er.command(self.er.history.entries[0])
-        print("last")
-
 class ExternReplOps(sublime_plugin.TextCommand):
     def run(self, edit, what):
         init_er(self)
@@ -72,7 +64,8 @@ class Er:
         self.ops = {
             "cd":       lambda: "cd " + self.path,
             "explorer": lambda: "explorer " + self.path,
-            "line":     lambda: self.line()
+            "line":     lambda: self.line(),
+            "last":     lambda: self.history.entries[0]
         }
         self.ops_lang = {
             "powershell": {
