@@ -14,13 +14,14 @@ class ExternReplUp(sublime_plugin.TextCommand):
 
 class ExternReplOps(sublime_plugin.TextCommand):
     def run(self, edit, what):
-        init_er(self)
+        self.view.run_command("save")
+        if not init_er(self): return
         self.er.command(self.er.ops_get(what)())
 
 class ExternReplHistory(sublime_plugin.TextCommand):
     "runs the command from the history"
     def run(self, edit):
-        init_er(self)
+        if not init_er(self): return
         self.view.window().show_quick_panel(self.er.history.entries, self.select )
     def select(self, x):
         if (x != -1):
@@ -48,10 +49,15 @@ class History:
 
 class Er:
     def __init__(self,stc):
+        self.error = None # can be set
         self.stc  = stc
         self.view = stc.view
         file_name = self.view.file_name()
-        self.path = [f for f in sublime.active_window().folders() if file_name.startswith(f)][0] # project directory
+        folders = [f for f in sublime.active_window().folders() if file_name.startswith(f)] # project directory
+        if not folders:
+            self.error ="Project Folder needs to be incuded in Side Bar (can't find project folder)"
+            return
+        self.path = folders[0]
         self.file = file_name[len(self.path)+1:]
         self.history = History(self.path)
         scopes = self.view.scope_name(self.view.sel()[0].begin()) # source.python meta.structure.list.python punctuation.definition.list.begin.python
@@ -138,5 +144,12 @@ class Er:
                 command = 'tmux send-keys -t repl "' + line + '" C-m'
                 Popen(command,shell=True)
 
+# returns false if there is an error happening
 def init_er(self):
     self.er = Er(self)
+    if self.er.error:
+        print(self.er.error)
+        return False
+    else:
+        return True
+
