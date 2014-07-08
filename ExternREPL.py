@@ -15,13 +15,13 @@ class ExternReplUp(sublime_plugin.TextCommand):
 class ExternReplOps(sublime_plugin.TextCommand):
     def run(self, edit, what):
         self.view.run_command("save")
-        if not init_er(self): return
+        init_er(self)
         self.er.command(self.er.ops_get(what)())
 
 class ExternReplHistory(sublime_plugin.TextCommand):
     "runs the command from the history"
     def run(self, edit):
-        if not init_er(self): return
+        init_er(self)
         self.view.window().show_quick_panel(self.er.history.entries, self.select )
     def select(self, x):
         if (x != -1):
@@ -30,7 +30,7 @@ class ExternReplHistory(sublime_plugin.TextCommand):
 class ExternReplFile(sublime_plugin.TextCommand):
     "opens the file under cursor"
     def run(self, edit):
-        if not init_er(self): return
+        init_er(self)
         file = self.er.line
         print("opening "+file)
         self.view.window().open_file(file)
@@ -63,10 +63,12 @@ class Er:
         file_name = self.view.file_name()
         folders = [f for f in sublime.active_window().folders() if file_name.lower().startswith(f.lower())] # project directory
         if not folders:
-            self.error ="Project Folder needs to be incuded in Side Bar (can't find project folder)"
-            return
-        self.path = folders[0]
-        self.file = file_name[len(self.path)+1:]
+         #   self.error ="Project Folder needs to be incuded in Side Bar (can't find project folder)"
+            self.path = ""
+            self.file = file_name
+        else:
+            self.path = folders[0]
+            self.file = file_name[len(self.path)+1:]
         self.history = History(self.path)
         scopes = self.view.scope_name(self.view.sel()[0].begin()) # source.python meta.structure.list.python punctuation.definition.list.begin.python
         langs = ["python","powershell","ruby","clojure"]
