@@ -27,6 +27,14 @@ class ExternReplHistory(sublime_plugin.TextCommand):
         if (x != -1):
             self.er.command(self.er.history.entries[x])
 
+class ExternReplFile(sublime_plugin.TextCommand):
+    "opens the file under cursor"
+    def run(self, edit):
+        if not init_er(self): return
+        file = self.er.line
+        print("opening "+file)
+        self.view.window().open_file(file)
+
 class History:
     def __init__(self,project):
         self.project = project
