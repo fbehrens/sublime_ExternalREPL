@@ -1,4 +1,4 @@
-import sublime, sublime_plugin
+import sublime, sublime_plugin, re
 from subprocess import Popen
 
 class ExternReplUp(sublime_plugin.TextCommand):
@@ -34,6 +34,23 @@ class ExternReplFile(sublime_plugin.TextCommand):
         file = self.er.line
         print("opening "+file)
         self.view.window().open_file(file)
+
+class ExternReplSwitch(sublime_plugin.TextCommand):
+    "switches from file to test and reverse"
+    def run(self, edit):
+        init_er(self)
+        other = getattr(self, "powershell")(self.view.file_name()) # send
+        print("switch to: "+ other)
+        self.view.window().open_file(other)
+
+    def powershell(self,file):
+        print("file=",file)
+        if re.compile( r'\.tests\.',re.I).search(file):
+            #c:\project\file.tests.ps1
+            return re.sub(r'\.tests\.',".",file)
+        else:
+            # c:\project\file.ps1
+            return re.sub(r'\.ps1$',".tests.ps1",file)
 
 class History:
     def __init__(self,project):
