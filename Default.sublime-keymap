@@ -2,6 +2,7 @@
 //platform
   { "keys": ["ctrl+shift+c"],"command": "extern_repl_ops" ,"args": {"what": "cd"}},
   { "keys": ["ctrl+shift+1"],"command": "extern_repl_ops" ,"args": {"what": "explorer"}},
+  { "keys": ["ctrl+shift+2"],"command": "extern_repl_dublicate_file" },
 //language
   { "keys": ["ctrl+shift+t"],"command": "extern_repl_ops" ,"args": {"what": "test"}},
   { "keys": ["ctrl+shift+l"],"command": "extern_repl_ops" ,"args": {"what": "load"}},
@@ -17,5 +18,4 @@
 //file opening
   { "keys": ["ctrl+shift+f"],"command": "extern_repl_file"},
   { "keys": ["ctrl+shift+w"],"command": "extern_repl_switch"},
-
  ]

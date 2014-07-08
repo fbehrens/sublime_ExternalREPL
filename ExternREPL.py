@@ -1,4 +1,4 @@
-import sublime, sublime_plugin, re
+import sublime, sublime_plugin, re, shutil, functools, os
 from subprocess import Popen
 
 class ExternReplUp(sublime_plugin.TextCommand):
@@ -51,6 +51,19 @@ class ExternReplSwitch(sublime_plugin.TextCommand):
         else:
             # c:\project\file.ps1
             return re.sub(r'\.ps1$',".tests.ps1",file)
+
+class ExternReplDublicateFile(sublime_plugin.TextCommand):
+    "copies current file and opens it"
+    def run(self, edit):
+        file = self.view.file_name()
+        v = self.view.window().show_input_panel("Copy File to:", file, functools.partial(self.on_done,file), None, None)
+        name, ext = os.path.splitext(file)
+        v.sel().clear()
+        v.sel().add(sublime.Region(0, len(name)))
+
+    def on_done(self,src, dst):
+        shutil.copyfile(src, dst)
+        self.view.window().open_file(dst)
 
 class History:
     def __init__(self,project):
