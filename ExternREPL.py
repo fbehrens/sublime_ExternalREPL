@@ -53,7 +53,7 @@ class Er:
         self.stc  = stc
         self.view = stc.view
         file_name = self.view.file_name()
-        folders = [f for f in sublime.active_window().folders() if file_name.startswith(f)] # project directory
+        folders = [f for f in sublime.active_window().folders() if file_name.lower().startswith(f.lower())] # project directory
         if not folders:
             self.error ="Project Folder needs to be incuded in Side Bar (can't find project folder)"
             return
@@ -72,7 +72,7 @@ class Er:
                 "load":              lambda: '. .\\' + self.file,
                 "test":              lambda: 'invoke-pester ' + self.file,
                 "test_one_pattern":  """^\s*(?:d|D)escribe\s+(?:'|")(.*)(?:'|")\s*\{\s*$""",
-                "test_one":          lambda: 'invoke-pester ' + self.file + ' -testname ' + ' '.join(self.selected_testnames())
+                "test_one":          lambda: 'invoke-pester ' + self.file + ' -testname ' + ' '.join(self.selected_testnames)
             },
             "clojure": {
                 "load":              lambda: '(load-file "' + path.replace("\\","/") + '")'
@@ -90,7 +90,7 @@ class Er:
             }
         }
         self.ops = {
-                "line":     lambda: self.line(),
+                "line":     lambda: self.line,
                 "last":     lambda: self.history.entries[0]
         }
 
@@ -99,6 +99,7 @@ class Er:
             or self.ops_platform.get(sublime.platform(),{}).get(operation) \
             or self.ops.get(operation)
 
+    @property
     def line(self):
         for region in self.view.sel():
             if region.empty():
@@ -111,6 +112,7 @@ class Er:
             else:
                 return self.view.substr(region)
 
+    @property
     def testnames(self):
         "( (region, 'name'),... )"
         testnames = []
@@ -121,10 +123,11 @@ class Er:
             region.b = regions[i+1].a
         return [ (region, testnames.pop(0)) for region in regions]
 
+    @property
     def selected_testnames(self):
         "list of testnames"
         acc = []
-        for region, testname in self.testnames():
+        for region, testname in self.testnames:
             for s in self.view.sel():
                 if s.intersects(region):
                     acc.append( testname )
