@@ -14,7 +14,8 @@ class ExternReplUp(sublime_plugin.TextCommand):
 
 class ExternReplOps(sublime_plugin.TextCommand):
     def run(self, edit, what):
-        self.view.run_command("save")
+        if self.view.is_dirty():
+            self.view.run_command("save")
         init_er(self)
         self.er.command(self.er.ops_get(what)())
 
@@ -55,6 +56,8 @@ class ExternReplSwitch(sublime_plugin.TextCommand):
 class ExternReplDublicateFile(sublime_plugin.TextCommand):
     "copies current file and opens it"
     def run(self, edit):
+        if self.view.is_dirty():
+            self.view.run_command("save")
         file = self.view.file_name()
         v = self.view.window().show_input_panel("Copy File to:", file, functools.partial(self.on_done,file), None, None)
         name, ext = os.path.splitext(file)
