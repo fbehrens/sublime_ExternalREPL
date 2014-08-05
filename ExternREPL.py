@@ -113,17 +113,22 @@ class Er:
         self.ops_lang = {
             "powershell": {
                 "load":              lambda: '. .\\' + self.file,
+                "run":               lambda: '.\\' + self.file,
                 "test":              lambda: 'invoke-pester ' + self.file,
                 "test_one_pattern":  """^\s*(?:d|D)escribe\s+(?:'|")(.*)(?:'|")\s*\{\s*$""",
-                "test_one":          lambda: 'invoke-pester ' + self.file + ' -testname ' + ' '.join(self.selected_testnames)
+                "test_one":          lambda: 'invoke-pester ' + self.file + ' -testname ' + ' '.join(['"'+i+'"' for i in self.selected_testnames])
             },
             "clojure": {
-                "load":              lambda: '(load-file "' + path.replace("\\","/") + '")'
+                "load":              lambda: '(load-file "' + self.file.replace("\\","/") + '")'
             },
             "ruby": {
-                "test_one_pattern": """^\s*it\s+(?:'|")(.*)(?:'|")\s+do\s*$"""
+                "test_one_pattern": """^\s*it\s+(?:'|")(.*)(?:'|")\s+do\s*$""",
+                "test":              lambda: 'ruby  -I test'+os.pathsep+'lib ' + self.file.replace("\\","/") ,
+                "load":              lambda: 'load "' + self.file.replace("\\","/") + '"',
+                "run":               lambda: 'ruby -I lib ' + self.file
             },
             "python": {
+                "run":               lambda: 'python ' + self.file
             },
         }
         self.ops_platform = {
