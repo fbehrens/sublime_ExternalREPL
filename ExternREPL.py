@@ -140,7 +140,8 @@ class Er:
     def ops_get(self,operation):
         return self.ops_lang.get(self.lang,{}).get(operation) \
             or self.ops_platform.get(sublime.platform(),{}).get(operation) \
-            or self.ops.get(operation)
+            or self.ops.get(operation) \
+            or (lambda: "Cannot find operation '"+operation+"' for lang="+self.lang + ", Platform="+sublime.platform())
 
     @property
     def line(self):
