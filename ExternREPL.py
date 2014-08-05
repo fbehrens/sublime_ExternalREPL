@@ -128,7 +128,7 @@ class Er:
         }
         self.ops_platform = {
             "windows": {
-                "cd":       lambda: "cd " + self.path,
+                "cd":       lambda: 'cd "' + self.path + '"',
                 "explorer": lambda: "explorer " + self.path,
             }
         }
