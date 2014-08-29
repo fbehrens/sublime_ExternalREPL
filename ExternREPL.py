@@ -93,15 +93,15 @@ class Er:
         self.error = None # can be set
         self.stc  = stc
         self.view = stc.view
-        file_name = self.view.file_name()
-        folders = [f for f in sublime.active_window().folders() if file_name.lower().startswith(f.lower())] # project directory
+        self.file_name = self.view.file_name()
+        folders = [f for f in sublime.active_window().folders() if self.file_name.lower().startswith(f.lower())] # project directory
         if not folders:
          #   self.error ="Project Folder needs to be incuded in Side Bar (can't find project folder)"
             self.path = ""
-            self.file = file_name
+            self.file = self.file_name
         else:
             self.path = folders[0]
-            self.file = file_name[len(self.path)+1:]
+            self.file = self.file_name[len(self.path)+1:]
         self.history = History(self.path)
         scopes = self.view.scope_name(self.view.sel()[0].begin()) # source.python meta.structure.list.python punctuation.definition.list.begin.python
         langs = ["python","powershell","ruby","clojure"]
@@ -124,7 +124,7 @@ class Er:
             "ruby": {
                 "test_one_pattern": """^\s*it\s+(?:'|")(.*)(?:'|")\s+do\s*$""",
                 "test":              lambda: 'ruby  -I test'+os.pathsep+'lib ' + self.file.replace("\\","/") ,
-                "load":              lambda: 'load "' + self.file.replace("\\","/") + '"',
+                "load":              lambda: 'load "' + self.file_name.replace("\\","/") + '"',
                 "run":               lambda: 'ruby -I lib ' + self.file
             },
             "python": {
