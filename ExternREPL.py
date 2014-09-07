@@ -68,6 +68,24 @@ class ExternReplDublicateFile(sublime_plugin.TextCommand):
         shutil.copyfile(src, dst)
         self.view.window().open_file(dst)
 
+class ExternReplMoveFile(sublime_plugin.TextCommand):
+    "renames current file and opens it"
+    def run(self, edit):
+        if self.view.is_dirty():
+            self.view.run_command("save")
+        file = self.view.file_name()
+        v = self.view.window().show_input_panel("Copy File to:", file, functools.partial(self.on_done,file), None, None)
+        name, ext = os.path.splitext(file)
+        v.sel().clear()
+        v.sel().add(sublime.Region(0, len(name)))
+
+    def on_done(self,src, dst):
+        try:
+            os.rename(src, dst)
+            self.view.retarget(dst)
+        except:
+            sublime.status_message("Unable to rename")
+
 class History:
     def __init__(self,project):
         self.project = project
