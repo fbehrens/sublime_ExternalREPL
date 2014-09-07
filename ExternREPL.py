@@ -106,6 +106,7 @@ class History:
         seen_add = seen.add
         self.entries = [ x for x in self.entries if x not in seen and not seen_add(x)]
 
+
 class Er:
     def __init__(self,stc):
         self.error = None # can be set
