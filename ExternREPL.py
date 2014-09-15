@@ -132,7 +132,7 @@ class Er:
         self.ops_lang = {
             "powershell": {
                 "load":              lambda: '. .\\' + self.file,
-                "run":               lambda: '.\\' + self.file,
+                "run":               lambda: self.file_name,
                 "test":              lambda: 'invoke-pester ' + self.file,
                 "test_one_pattern":  """^\s*(?:d|D)escribe\s+(?:'|")(.*)(?:'|")\s*\{\s*$""",
                 "test_one":          lambda: 'invoke-pester ' + self.file + ' -testname ' + ' '.join(['"'+i+'"' for i in self.selected_testnames])
