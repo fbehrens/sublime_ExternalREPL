@@ -46,7 +46,6 @@ class ExternReplRefresh(sublime_plugin.TextCommand):
         init_er(self)
         self.manual_refresh() or self.test() or self.runn()
 
-
     def manual_refresh(self):
         manual = {
           os.environ["scripts2"] + "\\libwba\\functions.md":"ruby \\Dropbox\\sublime\\data\\packages\\ExternalREPL\\ruby\\psdoc.rb > %scripts2%\\libwba\\functions.md"
@@ -56,17 +55,16 @@ class ExternReplRefresh(sublime_plugin.TextCommand):
             return_code = call(command, shell=True)
             print ("manual refresh with: " + command + "(" + str(return_code) + ")")
             return True
-        else:
-            return False
 
     def test(self):
-        print("test")
-        return False
+        if (self.er.ops_get('test?')()):
+            print("run tests")
+            self.er.command(self.er.ops_get('test')())
+            return True
 
     def runn(self):
         print("runn")
-        return False
-
+        self.er.command(self.er.ops_get('run')())
 
 class ExternReplSwitch(sublime_plugin.TextCommand):
     "switches from file to test and reverse"
@@ -163,23 +161,24 @@ class Er:
 
         self.ops_lang = {
             "powershell": {
+                "test?":             lambda: re.match(".*\.tests\.ps1$",self.file_name), # is this a test file ?
                 "load":              lambda: '. ' + self.file_name,
                 "run":               lambda: self.file_name,
                 "test":              lambda: 'invoke-pester ' + self.file,
                 "test_one_pattern":  """^\s*(?:d|D)escribe\s+(?:'|")(.*)(?:'|")\s*\{\s*$""",
-                "test_one":          lambda: 'invoke-pester ' + self.file + ' -testname ' + ' '.join(['"'+i+'"' for i in self.selected_testnames])
+                "test_one":          lambda: 'invoke-pester ' + self.file + ' -testname ' + ' '.join(['"'+i+'"' for i in self.selected_testnames]),
             },
             "clojure": {
-                "load":              lambda: '(load-file "' + self.file.replace("\\","/") + '")'
+                "load":              lambda: '(load-file "' + self.file.replace("\\","/") + '")',
             },
             "ruby": {
                 "test_one_pattern": """^\s*it\s+(?:'|")(.*)(?:'|")\s+do\s*$""",
                 "test":              lambda: 'ruby  -I test'+os.pathsep+'lib ' + self.file.replace("\\","/") ,
                 "load":              lambda: 'load "' + self.file_name.replace("\\","/") + '"',
-                "run":               lambda: 'ruby -I lib ' + self.file
+                "run":               lambda: 'ruby -I lib ' + self.file,
             },
             "python": {
-                "run":               lambda: 'python ' + self.file
+                "run":               lambda: 'python ' + self.file,
             },
         }
         self.ops_platform = {
@@ -190,7 +189,8 @@ class Er:
         }
         self.ops = {
                 "line":     lambda: self.line,
-                "last":     lambda: self.history.entries[0]
+                "last":     lambda: self.history.entries[0],
+                "test?":    lambda: False,
         }
 
     def ops_get(self,operation):

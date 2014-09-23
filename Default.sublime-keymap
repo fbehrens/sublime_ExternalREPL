@@ -7,10 +7,9 @@
 //language
   { "keys": ["ctrl+shift+t"],"command": "extern_repl_ops" ,"args": {"what": "test"}},
   { "keys": ["ctrl+shift+o"],"command": "extern_repl_ops" ,"args": {"what": "test_one"}},
-  { "keys": ["ctrl+shift+l"],"command": "extern_repl_ops" ,"args": {"what": "load"}},
+  { "keys": ["ctrl+shift+."],"command": "extern_repl_ops" ,"args": {"what": "load"}},
 
   { "keys": ["f5"],"command": "extern_repl_refresh" },
-  { "keys": ["ctrl+shift+u"],"command": "extern_repl_ops" ,"args": {"what": "run"} },
 
   { "keys": ["ctrl+shift+h"    ], "command": "extern_repl_history" },
 
