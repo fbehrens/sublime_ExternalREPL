@@ -1,5 +1,5 @@
 import sublime, sublime_plugin, re, shutil, functools, os
-from subprocess import Popen
+from subprocess import Popen, call
 
 class ExternReplUp(sublime_plugin.TextCommand):
     "sends up arrow"
@@ -29,12 +29,44 @@ class ExternReplHistory(sublime_plugin.TextCommand):
             self.er.command(self.er.history.entries[x])
 
 class ExternReplFile(sublime_plugin.TextCommand):
-    "opens the file under cursor"
+    "opens the file or webgage in curretn line"
     def run(self, edit):
         init_er(self)
         file = self.er.line
-        print("opening "+file)
-        self.view.window().open_file(file)
+        if (re.match("^http",file)):
+            print("browse to file")
+            Popen("chrome "+file)
+        else:
+            print("opening "+file)
+            self.view.window().open_file(file)
+
+class ExternReplRefresh(sublime_plugin.TextCommand):
+    "invoked be F5, new version of run"
+    def run(self, edit):
+        init_er(self)
+        self.manual_refresh() or self.test() or self.runn()
+
+
+    def manual_refresh(self):
+        manual = {
+          os.environ["scripts2"] + "\\libwba\\functions.md":"ruby \\Dropbox\\sublime\\data\\packages\\ExternalREPL\\ruby\\psdoc.rb > %scripts2%\\libwba\\functions.md"
+        }
+        if (self.er.file_name in manual):
+            command = manual[self.er.file_name]
+            return_code = call(command, shell=True)
+            print ("manual refresh with: " + command + "(" + str(return_code) + ")")
+            return True
+        else:
+            return False
+
+    def test(self):
+        print("test")
+        return False
+
+    def runn(self):
+        print("runn")
+        return False
+
 
 class ExternReplSwitch(sublime_plugin.TextCommand):
     "switches from file to test and reverse"
@@ -131,7 +163,7 @@ class Er:
 
         self.ops_lang = {
             "powershell": {
-                "load":              lambda: '. .\\' + self.file,
+                "load":              lambda: '. ' + self.file_name,
                 "run":               lambda: self.file_name,
                 "test":              lambda: 'invoke-pester ' + self.file,
                 "test_one_pattern":  """^\s*(?:d|D)escribe\s+(?:'|")(.*)(?:'|")\s*\{\s*$""",
