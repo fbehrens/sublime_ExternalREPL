@@ -43,6 +43,8 @@ class ExternReplFile(sublime_plugin.TextCommand):
 class ExternReplRefresh(sublime_plugin.TextCommand):
     "invoked be F5, new version of run"
     def run(self, edit):
+        if self.view.is_dirty():
+            self.view.run_command("save")
         init_er(self)
         self.manual_refresh() or self.test() or self.runn()
 
