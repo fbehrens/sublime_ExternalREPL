@@ -49,6 +49,7 @@ class ExternReplRefresh(sublime_plugin.TextCommand):
         self.manual_refresh() or self.test() or self.runn()
 
     def manual_refresh(self):
+        # dictionary of {file: command ,... }
         manual = {
           os.environ["scripts2"] + "\\libwba\\functions.md":"ruby \\Dropbox\\sublime\\data\\packages\\ExternalREPL\\ruby\\psdoc.rb > %scripts2%\\libwba\\functions.md"
         }
@@ -178,6 +179,8 @@ class Er:
                 "test":              lambda: 'ruby  -I test'+os.pathsep+'lib ' + self.file.replace("\\","/") ,
                 "load":              lambda: 'load "' + self.file_name.replace("\\","/") + '"',
                 "run":               lambda: 'ruby -I lib ' + self.file,
+                "test_one":          lambda: 'ruby -I lib' + os.pathsep +'test ' + self.file + ' --name "/' + '|'.join([ '^test_\d{4}_'+i+'$' for i in self.selected_testnames]) +'/"',
+                                     # ruby -I lib;test test\couch_test.rb --name /^test_\d{4}_describe1$|^test_\d{4}_describe2$/"
             },
             "python": {
                 "run":               lambda: 'python ' + self.file,
