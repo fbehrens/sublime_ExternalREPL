@@ -3,6 +3,10 @@
   { "keys": ["ctrl+shift+c"],"command": "extern_repl_ops" ,"args": {"what": "cd"}},
   { "keys": ["ctrl+shift+1"],"command": "extern_repl_ops" ,"args": {"what": "explorer"}},
   { "keys": ["ctrl+shift+2"],"command": "extern_repl_dublicate_file" },
+  { "keys": ["ctrl+shift+3"],"command": "extern_repl_file" },
+  { "keys": ["ctrl+shift+4"],"command": "extern_repl_markdown_toc" },
+  { "keys": ["ctrl+shift+5"],"command": "extern_repl_show_output" },
+
   { "keys": ["f2"],"command": "extern_repl_move_file" },
 //language
   { "keys": ["ctrl+shift+t"],"command": "extern_repl_ops" ,"args": {"what": "test"}},
@@ -19,6 +23,5 @@
   { "keys": ["ctrl+up"         ], "command": "extern_repl_up" },
 
 //file opening
-  { "keys": ["ctrl+shift+3"],"command": "extern_repl_file"},
   { "keys": ["ctrl+shift+'"],"command": "extern_repl_switch"},
  ]

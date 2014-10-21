@@ -101,6 +101,31 @@ class ExternReplDublicateFile(sublime_plugin.TextCommand):
         shutil.copyfile(src, dst)
         self.view.window().open_file(dst)
 
+class ExternReplMarkdownToc(sublime_plugin.TextCommand):
+    "copies current file and opens it"
+    def run(self, edit):
+        if self.view.is_dirty():
+            self.view.run_command("save")
+        file = self.view.file_name()
+        if re.compile( r'\.md$',re.I).search(file):
+            #c:\project\file.tests.ps1
+            toc = re.sub(r'\.md$',".md.toc",file)
+            command = "ruby "+sublime.packages_path()+"\\ExternalREPL\\ruby\\toc.rb "+file+" > "+toc
+            return_code = call(command, shell=True)
+            self.view.window().open_file(toc)
+        elif re.compile( r'\.md.toc$',re.I).search(file):
+            md = re.sub(r'\.md\.toc$',".md",file)
+            command = "ruby "+sublime.packages_path()+"\\ExternalREPL\\ruby\\retoc.rb "+file+" "+md #+" > "+md
+            return_code = call(command, shell=True)
+            self.view.window().open_file(md)
+
+class ExternReplShowOutput(sublime_plugin.WindowCommand):
+    "pipes textbuffer into command"
+    def run(self):
+        self.output_view = self.window.create_output_panel("exec")
+        self.output_view.run_command('append', {'characters': 'Hallo output view', 'force': True, 'scroll_to_end': True})
+        self.window.run_command("show_panel", {"panel": "output.exec"})
+
 class ExternReplMoveFile(sublime_plugin.TextCommand):
     "renames current file and opens it"
     def run(self, edit):
