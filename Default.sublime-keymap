@@ -23,5 +23,5 @@
   { "keys": ["ctrl+up"         ], "command": "extern_repl_up" },
 
 //file opening
-  { "keys": ["ctrl+shift+'"],"command": "extern_repl_switch"},
+  { "keys": ["ctrl+shift+'"],"command": "extern_repl_alternate"},
  ]

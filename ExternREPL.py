@@ -69,22 +69,13 @@ class ExternReplRefresh(sublime_plugin.TextCommand):
         print("runn")
         self.er.command(self.er.ops_get('run')())
 
-class ExternReplSwitch(sublime_plugin.TextCommand):
+class ExternReplAlternate(sublime_plugin.TextCommand):
     "switches from file to test and reverse"
     def run(self, edit):
         init_er(self)
-        other = getattr(self, "powershell")(self.view.file_name()) # send
+        other = self.er.alternate(self.view.file_name())
         print("switch to: "+ other)
         self.view.window().open_file(other)
-
-    def powershell(self,file):
-        print("file=",file)
-        if re.compile( r'\.tests\.',re.I).search(file):
-            #c:\project\file.tests.ps1
-            return re.sub(r'\.tests\.',".",file)
-        else:
-            # c:\project\file.ps1
-            return re.sub(r'\.ps1$',".tests.ps1",file)
 
 class ExternReplDublicateFile(sublime_plugin.TextCommand):
     "copies current file and opens it"
@@ -276,6 +267,29 @@ class Er:
             for line in quoted.split('\n'):
                 command = 'tmux send-keys -t repl "' + line + '" C-m'
                 Popen(command,shell=True)
+
+    # test switching
+    def alternate(self,file):
+        return getattr(self, "alternate_"+ self.lang)(file)
+
+    # converters for alternate file witching named altenate_syntax
+    def alternate_powershell(self,file):
+        if re.compile( r'\.tests\.',re.I).search(file):
+            # c:\project\file.tests.ps1
+            return re.sub(r'\.tests\.',".",file)
+        else:
+            # c:\project\file.ps1
+            return re.sub(r'\.ps1$',".tests.ps1",file)
+
+    def alternate_ruby(self,file):
+        if re.compile( r'\\test_',re.I).search(file):
+            # c:\project\test\bar\test_foo.ps1
+            a = re.sub(r'\\test\\',"\\\\lib\\\\",file)
+            return re.sub(r'\\test_',"\\\\",a)
+        else:
+            # c:\project\lib\bar\foo.ps1
+            a = re.sub(r'\\lib\\',"\\\\test\\\\",file)
+            return re.sub(r'\\([^\\]+)$',"\\\\test_\g<1>", a)
 
 # returns false if there is an error happening
 def init_er(self):
