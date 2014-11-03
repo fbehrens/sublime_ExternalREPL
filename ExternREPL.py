@@ -189,6 +189,8 @@ class Er:
             },
             "clojure": {
                 "load":              lambda: '(load-file "' + self.file.replace("\\","/") + '")',
+                "line":              lambda: self.clojure_current_form,
+                "cd":                lambda: self.clojure_cd,
             },
             "ruby": {
                 "test_one_pattern": """^\s*it\s+(?:'|")(.*)(?:'|")\s+do\s*$""",
@@ -232,6 +234,25 @@ class Er:
                 return line_contents
             else:
                 return self.view.substr(region)
+
+    @property
+    def clojure_current_form(self):
+        opening = []
+        regions = self.view.find_all("^\(",fmt="$1",extractions=opening)
+        for i,region in enumerate(regions[:-1]):
+            region.b = regions[i+1].a-1
+        regions[-1].b = self.view.size()
+        forms = []
+        for region in regions:
+            for s in self.view.sel():
+                if s.intersects(region):
+                    forms.append( self.view.substr(region) )
+        return "".join(forms)
+
+    @property
+    def clojure_cd(self):
+        ns = self.view.find(r"\(\s*ns [\w\.]+", 0)
+        return self.view.substr(ns) + ")"
 
     @property
     def testnames(self):
