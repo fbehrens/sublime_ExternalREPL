@@ -48,7 +48,9 @@ def analyse_function f
   f.doc = f.doc.map{|l| l[/[^#]*$/].chomp.strip}.join(" ")
 end
 
-Dir['*/*.ps1'].reject {|s| s=~ /test/}.each do |file|
+Dir['*/*.ps1'].
+    reject {|s| s=~ /test/}.
+    reject {|s| s=~ /^Pester/}.each do |file|
   file =~ %r{([\w]+)/([\w]+)}
   mo, fi = $1, $2
   analyse mo, fi
