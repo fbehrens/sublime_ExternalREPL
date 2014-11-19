@@ -172,7 +172,7 @@ class Er:
             self.file = self.file_name[len(self.path)+1:]
         self.history = History(self.path)
         scopes = self.view.scope_name(self.view.sel()[0].begin()) # source.python meta.structure.list.python punctuation.definition.list.begin.python
-        langs = ["python","powershell","ruby","clojure"]
+        langs = ["python","powershell","ruby","clojure","markdown"]
         match = [l for l in langs if l in scopes]
 
         self.lang = "unknown"
@@ -202,6 +202,10 @@ class Er:
             },
             "python": {
                 "run":               lambda: 'python ' + self.file,
+            },
+            "markdown": {
+                "load": lambda: "pandoc -r markdown_github+footnotes -o " + re.sub("\..+$",".docx",self.file) + " " + self.file,
+                "run":  lambda: self.ops_lang.get("markdown").get("load")() + " && " + re.sub("\..+$",".docx",self.file),
             },
         }
         self.ops_platform = {
