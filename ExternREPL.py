@@ -204,8 +204,8 @@ class Er:
                 "run":               lambda: 'python ' + self.file,
             },
             "markdown": {
-                "load": lambda: "pandoc -r markdown_github+footnotes -o " + re.sub("\..+$",".docx",self.file) + " " + self.file,
-                "run":  lambda: self.ops_lang.get("markdown").get("load")() + " && " + re.sub("\..+$",".docx",self.file),
+                "load": lambda: "pandoc -r markdown_github+footnotes+grid_tables -o \"" + re.sub("\..+$",".docx",self.file) + "\" \"" + self.file +"\"",
+                "run":  lambda: self.ops_lang.get("markdown").get("load")() + " && \"" + re.sub("\..+$",".docx",self.file) + "\"",
             },
         }
         self.ops_platform = {
