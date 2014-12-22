@@ -1,5 +1,7 @@
-import sublime, sublime_plugin, re, shutil, functools, os
+import sublime, sublime_plugin, re, shutil, functools, sys, os
 from subprocess import Popen, call
+sys.path.append(os.path.dirname(__file__))
+import nrepl
 
 class ExternReplUp(sublime_plugin.TextCommand):
     "sends up arrow"
@@ -279,12 +281,24 @@ class Er:
                     acc.append( testname )
         return acc
 
+    @property
+    def nrepl_connection(self):
+        try:
+            self.nrepl
+        except AttributeError:
+            self.nrepl = nrepl.connect("nrepl://localhost:55555")
+        return self.nrepl
+
     def command(self,command):
         self.history.append(command)
         # \ => \\ | " => \" | remove \n
         quoted = command.replace('\\','\\\\')\
                         .replace('"','\\"')
-        if sublime.platform() == 'windows':
+        if self.lang == 'clojure':
+            self.nrepl_connection.write({"op": "eval", "code": command})
+            print(self.nrepl_connection.read())
+            # print(self.nrepl_connection.read().get('value'))
+        elif sublime.platform() == 'windows':
             command = 'ConEmuC -GuiMacro:0 Paste(0,"' + quoted + '\\n")'
             Popen(command)
         else:
