@@ -216,6 +216,7 @@ class Er:
         }
         self.ops = {
                 "line":     lambda: self.line,
+                "lineuncomment": lambda s: re.sub(r"^\s*#\s*","",s),
                 "last":     lambda: self.history.entries[0],
                 "test?":    lambda: False,
         }
@@ -235,7 +236,7 @@ class Er:
                 line_below = sublime.Region(line.b+1)
                 self.view.sel().clear()
                 self.view.sel().add(line_below)
-                return line_contents
+                return self.ops_get("lineuncomment")(line_contents)
             else:
                 return self.view.substr(region)
 
