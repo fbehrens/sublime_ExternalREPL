@@ -17,7 +17,9 @@ class ExternReplOps(sublime_plugin.TextCommand):
         if self.view.is_dirty():
             self.view.run_command("save")
         init_er(self)
-        self.er.command(self.er.ops_get(what)())
+        command = self.er.ops_get(what)()
+        print(command)
+        self.er.command(command)
 
 class ExternReplHistory(sublime_plugin.TextCommand):
     "runs the command from the history"
@@ -29,7 +31,7 @@ class ExternReplHistory(sublime_plugin.TextCommand):
             self.er.command(self.er.history.entries[x])
 
 class ExternReplFile(sublime_plugin.TextCommand):
-    "opens the file or webgage in curretn line"
+    "opens the file or webpage in current line"
     def run(self, edit):
         init_er(self)
         file = self.er.line
@@ -172,7 +174,7 @@ class Er:
             self.file = self.file_name[len(self.path)+1:]
         self.history = History(self.path)
         scopes = self.view.scope_name(self.view.sel()[0].begin()) # source.python meta.structure.list.python punctuation.definition.list.begin.python
-        langs = ["python","powershell","ruby","clojure","markdown"]
+        langs = ["fsharp","python","powershell","ruby","clojure","markdown"]
         match = [l for l in langs if l in scopes]
 
         self.lang = "unknown"
@@ -207,6 +209,9 @@ class Er:
                 "load": lambda: "pandoc -r markdown_github+footnotes+grid_tables -o \"" + re.sub("\..+$",".docx",self.file) + "\" \"" + self.file +"\"",
                 "run":  lambda: self.ops_lang.get("markdown").get("load")() + " && \"" + re.sub("\..+$",".docx",self.file) + "\"",
             },
+            "fsharp": {
+                "line": lambda: self.line + ";\;",
+            }
         }
         self.ops_platform = {
             "windows": {
@@ -216,7 +221,7 @@ class Er:
         }
         self.ops = {
                 "line":     lambda: self.line,
-                "lineuncomment": lambda s: re.sub(r"^\s*#\s*","",s),
+                "lineuncomment": lambda s: re.sub(r"^\s*#\s*","",s), # strip leading #
                 "last":     lambda: self.history.entries[0],
                 "test?":    lambda: False,
         }
