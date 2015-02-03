@@ -211,6 +211,7 @@ class Er:
             },
             "fsharp": {
                 "line": lambda: self.line + ";\;",
+                "load": lambda: "#load \"" + self.file_name + "\";\;",
             }
         }
         self.ops_platform = {
