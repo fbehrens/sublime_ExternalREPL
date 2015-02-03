@@ -157,7 +157,6 @@ class History:
         seen_add = seen.add
         self.entries = [ x for x in self.entries if x not in seen and not seen_add(x)]
 
-
 class Er:
     def __init__(self,stc):
         self.error = None # can be set
@@ -185,9 +184,9 @@ class Er:
                 "test?":             lambda: re.match(".*\.tests\.ps1$",self.file_name), # is this a test file ?
                 "load":              lambda: '. ' + self.file_name,
                 "run":               lambda: self.file_name,
-                "test":              lambda: 'invoke-pester ' + self.file,
-                "test_one_pattern":  """^\s*(?:d|D)escribe\s+(?:'|")(.*)(?:'|")\s*\{\s*$""",
-                "test_one":          lambda: 'invoke-pester ' + self.file + ' -testname ' + ' '.join(['"'+i+'"' for i in self.selected_testnames]),
+                "test":              lambda: 'psspec ' + self.file,
+                "test_one_pattern":  """^\s*(?:it|It|describe|Describe)\s+(?:'|")(.*)(?:'|").*\{\s*$""",
+                "test_one":          lambda: 'psspec ' + self.file + ' -example "' + '|'.join([i for i in self.selected_testnames]) + '"',
             },
             "clojure": {
                 "load":              lambda: '(load-file "' + self.file.replace("\\","/") + '")',
