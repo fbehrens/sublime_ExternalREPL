@@ -10,20 +10,22 @@ with some added persistence in the editor.
 
 ## Installation 
 * Install [Sublime Text 3](http://www.sublimetext.com/3)
+* Install [Package Control](https://packagecontrol.io/installation)
+* Install this Plugin from Sublime with `CTrl-Shift-P / Package Control: Install Package / ExternalREPL`
 
 ### windows
 Add Sublime Directory to Path
 Adjust ConEmu Settings: deactivate `Keys & Macro/Paste/Confirm <Enter> keypress`
-![ConEmu Settings](imgages/ConEmuSettings.png)
 
+![ConEmu Settings](images/ConEmuSettings.png)
 
-Start sublim from ConEmu
 
 ### Linux
 * Install [Tmux](http://www.sublimetext.com/3) for Mac / Linux 
 
 
 ## Usage
+Start sublime from ConEmu with `subl`
 Press f1 for 
 
 | Language | load        | run | test | test_one|testfile
