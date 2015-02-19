@@ -115,8 +115,18 @@ class ExternReplMarkdownToc(sublime_plugin.TextCommand):
 class ExternReplShowOutput(sublime_plugin.WindowCommand):
     "pipes textbuffer into command"
     def run(self):
+        text="""
+repl                           run             test                          misc
+cs-EN selected                 cs-. load file  cs-t run testfile             cs-c change directory/ns
+c-up  <up> last repl command   f5   run file   cs-o excecute selected test   cs-1 open explorer
+cs-s  last editor command                      cs-'      switch code<->test  cs-2 dublicate file
+cs-h  execute from history                                                   f2   rename
+                                                                             cs-3 open file on line
+                                                                             f1   show shortkeys
+                                                                             cs-4 restructure mdTOC
+        """
         self.output_view = self.window.create_output_panel("exec")
-        self.output_view.run_command('append', {'characters': 'Hallo output view', 'force': True, 'scroll_to_end': True})
+        self.output_view.run_command('append', {'characters': text, 'force': True, 'scroll_to_end': True})
         self.window.run_command("show_panel", {"panel": "output.exec"})
 
 class ExternReplMoveFile(sublime_plugin.TextCommand):
@@ -209,8 +219,11 @@ class Er:
                 "run":  lambda: self.ops_lang.get("markdown").get("load")() + " && \"" + re.sub("\..+$",".docx",self.file) + "\"",
             },
             "fsharp": {
-                "line": lambda: self.line + ";\;",
-                "load": lambda: "#load \"" + self.file_name + "\";\;",
+                # "line": lambda: self.line + ";\;",
+                "line": lambda: self.line + ";;",
+                # "load": lambda: "#load \"" + self.file_name + "\";\;",
+                "load": lambda: "#load \"" + self.file_name + "\";;",
+                "lineuncomment": lambda s: re.sub(r"^\s*//\s*","",s), # strip leading //
             }
         }
         self.ops_platform = {

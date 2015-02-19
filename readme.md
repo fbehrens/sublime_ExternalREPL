@@ -1,32 +1,35 @@
-# External REPL     
-Sublime 3 Plugin to send lines of code to any REPL running in exteral Console.
-Works on Windows with ConEmu and on OSX/Linux with tmux
+# Rationale
+Sublime 3 Plugin to interact with a external console for interactive development workflow 
+in many languages and tools. 
 
-## why    
-- simple (20 loc)
-- Works on all platforms
-- with all repls
+I prefer this workflow as it allow flexibity to work on the console, 
+with some added persistence in the editor.
 
-## requirements    
-* windows: runnning [ConEmu](https://github.com/Maximus5/ConEmu)
--Terminal and `..../<ConEmu-Dir>/ConEmu` on path
-* osx and linux: [tmux](http://tmux.sourceforge.net) started with `tmux new -s repl` (starts a new tmux named session)
 
-## Keymap    
-* `ctrl-shift-enter`: sends current line to external REPL, cursor walks to next line 
-* `ctrl-shift-l(deactivated)`: sends last command to external REPL (Windows only)
-* `ctrl-shift-s`: sends up-arrow and return to external REPL
-* `ctrl-shift-l`: reloads a clojure file in external REPL (load_file "test/wppe_test.clj")
+* osx and linux: [tmux](http://tmux.sourceforge.net). Start a new na`````mes session with `tmux new -s repl`.
 
-## ToDo    
-- detection of blocks (ruby method definitions, clojure forms)
+## Installation 
+* Install [Sublime Text 3](http://www.sublimetext.com/3)
 
-## Release    
-`git tag`
-`git tag 0.0.5`
-`git push origin 0.0.5`
+### windows
+Add Sublime Directory to Path
+Adjust ConEmu Settings: deactivate `Keys & Macro/Paste/Confirm <Enter> keypress`
+![ConEmu Settings](imgages/ConEmuSettings.png)
+
+
+Start sublim from ConEmu
+
+### Linux
+* Install [Tmux](http://www.sublimetext.com/3) for Mac / Linux 
+
+
+## Usage
+Press f1 for 
+
+| Language | load        | run | test | test_one|testfile
+| ---------| ------------| ----| -----| ----| -----|
+| powershell | . <file>| <file>| psspec <file> | psspec <file> -example <name>| <file>.tests.ps1 |
+| ruby     | ruby <file>| load '<file>'|       |                              |                  |
 
 ## License    
-MIT
-
-ls -l
+MIT-License (see license.txt)
