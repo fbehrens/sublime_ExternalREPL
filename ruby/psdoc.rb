@@ -1,9 +1,6 @@
 # print documentation of powershell modules
 require 'map'
 require 'awesome_print'
-
-Dir.chdir "#{ENV['scripts2']}/libwba/modules"
-
 $f = []
 
 def delta_brackets line
@@ -51,7 +48,7 @@ end
 Dir['*/*.ps1'].
     reject {|s| s=~ /test/}.
     reject {|s| s=~ /^Pester/}.each do |file|
-  file =~ %r{([\w]+)/([\w]+)}
+  file =~ %r{([\w]+)/(.+)\.}
   mo, fi = $1, $2
   analyse mo, fi
 end

@@ -183,11 +183,15 @@ class Er:
             self.file = self.file_name[len(self.path)+1:]
         self.history = History(self.path)
         scopes = self.view.scope_name(self.view.sel()[0].begin()) # source.python meta.structure.list.python punctuation.definition.list.begin.python
-        langs = ["fsharp","python","powershell","ruby","clojure","markdown"]
+        print(scopes)
+        langs = ["fsharp","python","powershell","ruby","clojure","markdown","dot"]
         match = [l for l in langs if l in scopes]
 
         self.lang = "unknown"
-        if match:    self.lang = match[0]
+        if match:
+            self.lang = match[0]
+        else:
+            print("Cant find lang for scopes = "+scopes)
 
         self.ops_lang = {
             "powershell": {
@@ -224,6 +228,9 @@ class Er:
                 # "load": lambda: "#load \"" + self.file_name + "\";\;",
                 "load": lambda: "#load \"" + self.file_name + "\";;",
                 "lineuncomment": lambda s: re.sub(r"^\s*//\s*","",s), # strip leading //
+            },
+            "dot": {
+                "run":               lambda: 'dot -Tpng -O ' + self.file,
             }
         }
         self.ops_platform = {
@@ -234,7 +241,7 @@ class Er:
         }
         self.ops = {
                 "line":     lambda: self.line,
-                "lineuncomment": lambda s: re.sub(r"^\s*#\s*","",s), # strip leading #
+                "lineuncomment": lambda s: re.sub(r"^\s*(#|rem)\s*","",s), # strip leading #
                 "last":     lambda: self.history.entries[0],
                 "test?":    lambda: False,
         }
