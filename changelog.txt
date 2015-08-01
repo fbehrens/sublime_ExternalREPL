@@ -1,3 +1,7 @@
+0.1.1
+  improve readme
+  language support for markdown, dot, fsharp
+  fixing quoting of ; in tmux
 0.0.4
   `ctrl-shift-l`: sends last command to external REPL (Windows only)
   `ctrl-shift-s`: sends up-arrow and return to external REPL (Windows only) 
