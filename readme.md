@@ -27,6 +27,7 @@ From Tmux you can detach with `Prefix(C-b) d`.
 and reattach to your tmux session with `tmux a -t repl`
 
 ## Usage
+It is recommended to start sublime from your console using the `subl` command.
 `Command()-Shift P` and typing `External` shows the commands. 
 Hotkeys are shown via `F1`
 
@@ -65,6 +66,17 @@ This is a grabbag for some stuff that i found useful at a time.
 `cs-3` open file on selected editor line (http:// in chrome or with sublime )
 `f1`   show shortkeys
 `cs-4` restructure mdTOC                                                                             
+
+## Troubleshooting
+
+### Silent Failure
+## Check if console is in your path
+Open the sublime console  `c-`` 
+
+    import os
+    os.environ['PATH'] = "/usr/local/bin:" + os.environ['PATH']
+
+Check if `tmux` or `ConEmuC` is on your path. If not consider starting sublime from the console using the `subl` command.
 
 ## License    
 MIT-License (see license.txt)
