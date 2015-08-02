@@ -217,6 +217,7 @@ class Er:
             },
             "python": {
                 "run":               lambda: 'python ' + self.file,
+                "load":              lambda: 'exec(open("'+self.file+'").read())',
             },
             "markdown": {
                 "load": lambda: "pandoc -r markdown_github+footnotes+grid_tables -o \"" + re.sub("\..+$",".docx",self.file) + "\" \"" + self.file +"\"",
