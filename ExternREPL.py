@@ -235,11 +235,11 @@ class Er:
         }
         self.ops_platform = {
             "windows": {
-                "cd":       lambda: 'cd "' + self.path + '"',
                 "explorer": lambda: "explorer " + self.path,
             }
         }
         self.ops = {
+                "cd":       lambda: 'cd "' + self.path + '"',
                 "line":     lambda: self.line,
                 "lineuncomment": lambda s: re.sub(r"^\s*(#|rem)\s*","",s), # strip leading #
                 "last":     lambda: self.history.entries[0],
