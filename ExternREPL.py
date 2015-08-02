@@ -316,8 +316,8 @@ class Er:
         else:
             # Multiline with tmux needs multiple commands
             for line in quoted.split('\n'):
-                line = re.sub(r";",";;",line,1) # make firrst to ;;
-                line = re.sub(r"\$","\\\$", line)
+                line = re.sub(r";$","\\;",line)   # quote ; at end of line
+                line = re.sub(r"\$","\\\$", line) # quote $
                 command = 'tmux send-keys -t repl "' + line + '"'
                 print(command)
                 Popen(command,shell=True)

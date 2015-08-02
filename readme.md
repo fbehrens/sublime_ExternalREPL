@@ -21,13 +21,13 @@ Start sublime from ConEmu with `subl`. This makes sure that ConEmuC is on path
 Install [Tmux](https://tmux.github.io/) for Mac / Linux 
 Plugin interacts with session `repl` via `tmux send-keys -t repl "commmand"`
 
-* Usage
-Start session with `tmux new s repl`.
+* Tmux101
 From Tmux you can detach with `Prefix(C-b) d`.
 and reattach to your tmux session with `tmux a -t repl`
 
 ## Usage
-It is recommended to start sublime from your console using the `subl` command.
+Start session with `tmux new s repl`.
+Start sublime from your console using the `subl` command.
 `Command()-Shift P` and typing `External` shows the commands. 
 Hotkeys are shown via `F1`
 
