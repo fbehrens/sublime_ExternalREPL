@@ -1,3 +1,5 @@
+0.1.2
+  fix quoting of $ in tmux
 0.1.1
   improve readme
   language support for markdown, dot, fsharp

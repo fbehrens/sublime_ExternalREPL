@@ -1,11 +1,5 @@
-# Rationale
-Sublime 3 Plugin to interact with a external console for interactive development workflow 
-in many languages and tools. 
-
-I prefer this workflow as it allow flexibity to work on the console, 
-with some added persistence in the editor.
-
-
+ 	
+ 	cd 
 ## Installation 
 * Install [Sublime Text 3](http://www.sublimetext.com/3)
 * Install [Package Control](https://packagecontrol.io/installation)
@@ -46,14 +40,14 @@ It is possible to execute only the selected test.
 There is a convention for naming of testfiles. This makes it possible to switch between implementation and tests.
 The commands are run from the root of the sublime folder, so your project directory needs to be in the sublime side bar.
 
-|  Language  |      run      |     load    | test framework |      test     |            test_one           |     testfile     |
-|------------|---------------|-------------|----------------|---------------|-------------------------------|------------------|
-| powershell | <file>        | . <file>    | psspec         | psspec <file> | psspec <file> -example <name> | <file>.tests.ps1 |
-| ruby       | load '<file>' | ruby <file> | minitest       |               |                               |                  |
-| fsharp     |               |             |                |               |                               |                  |
-| clojure    |               |             |                |               |                               |                  |
-| dot        | dot           |             |                |               |                               |                  |
-| markdown   | pandoc -> doc |             |                |               |                               |                  |
+|  Language  | comment |      run      |     load    | test framework |      test     |            test_one           |     testfile     |
+|------------|---------|---------------|-------------|----------------|---------------|-------------------------------|------------------|
+| powershell | #       | <file>        | . <file>    | psspec         | psspec <file> | psspec <file> -example <name> | <file>.tests.ps1 |
+| ruby       | #       | load '<file>' | ruby <file> | minitest       |               |                               |                  |
+| fsharp     | //      |               |             |                |               |                               |                  |
+| clojure    | ;       |               |             |                |               |                               |                  |
+| dot        |         | dot           |             |                |               |                               |                  |
+| markdown   |         | pandoc -> doc |             |                |               |                               |                  |
 
 `cs-.` load file  
 `F5`   run file   
