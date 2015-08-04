@@ -1,5 +1,3 @@
- 	
- 	cd 
 ## Installation 
 * Install [Sublime Text 3](http://www.sublimetext.com/3)
 * Install [Package Control](https://packagecontrol.io/installation)
@@ -19,11 +17,16 @@ Start sublime from ConEmu with `subl`. This makes sure that ConEmuC is on path
 ### Linux
 * Installation 
 Install [Tmux](https://tmux.github.io/) for Mac / Linux 
-Plugin interacts with session `repl` via `tmux send-keys -t repl "commmand"`
 
-* Tmux101
-From Tmux you can detach with `Prefix(C-b) d`.
-and reattach to your tmux session with `tmux a -t repl`
+### Tested Configuration
+Sublime: 3 build 3083
+
+Osx: 10.10.4 Yosemite
+Linux: Ubuntu 12.04, 14.04
+Tmux: 2.0
+
+Windows: 7, 8.1
+ConEmu: 150513
 
 ## Usage
 Start session with `tmux new s repl`.
@@ -70,13 +73,27 @@ This is a grabbag for some stuff that i found useful at a time.
 ## Troubleshooting
 
 ### Silent Failure
-## Check if console is in your path
+#### Check if console is in your path
 Open the sublime console  `c-`` 
 
     import os
     os.environ['PATH'] = "/usr/local/bin:" + os.environ['PATH']
 
 Check if `tmux` or `ConEmuC` is on your path. If not consider starting sublime from the console using the `subl` command.
+
+#### Check if you can send Keys to your console
+Do this from another console and 
+
+	# Tmux properly working
+	tmux send-keys -t repl 'ls'  C-m         
+
+	# ConEmu on Windows 
+    ConEmuC -GuiMacro:0 Paste(0,"dir\\n")    
+
+## Tmux 101
+* From Tmux you can detach with `Prefix(C-b) d`.
+* and reattach to your tmux session with `tmux a -t repl`
+* [Making the clipboard work between iTerm2, tmux, vim and OS X.](http://evertpot.com/osx-tmux-vim-copy-paste-clipboard/)
 
 ## License    
 MIT-License (see license.txt)
