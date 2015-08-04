@@ -167,7 +167,16 @@ class History:
         seen_add = seen.add
         self.entries = [ x for x in self.entries if x not in seen and not seen_add(x)]
 
+# replaces _ with \w+ and reduces whitespace to one single
+def prep_data(a):
+    f = a[0].replace("_","\w+")
+    f = re.sub(r'\s+', " ", f)
+    return (f,a[1])
+# assert prep_data(("a  _",41)) ==  ("a \w+",41)  , "works"
+
+
 class Er:
+
     def __init__(self,stc):
         self.error = None # can be set
         self.stc  = stc
@@ -183,7 +192,7 @@ class Er:
             self.file = self.file_name[len(self.path)+1:]
         self.history = History(self.path)
         scopes = self.view.scope_name(self.view.sel()[0].begin()) # source.python meta.structure.list.python punctuation.definition.list.begin.python
-        print(scopes)
+        # print(scopes)
         langs = ["fsharp","python","powershell","ruby","clojure","markdown","dot"]
         match = [l for l in langs if l in scopes]
 
@@ -191,69 +200,56 @@ class Er:
         if match:
             self.lang = match[0]
         else:
-            print("Cant find lang for scopes = "+scopes)
+            print("Cant find lang for scopes")
 
-        self.ops_lang = {
-            "powershell": {
-                "test?":             lambda: re.match(".*\.tests\.ps1$",self.file_name), # is this a test file ?
-                "load":              lambda: '. ' + self.file_name,
-                "run":               lambda: self.file_name,
-                "test":              lambda: 'psspec ' + self.file,
-                "test_one_pattern":  """^\s*(?:it|It|describe|Describe)\s+(?:'|")(.*)(?:'|").*\{\s*$""",
-                "test_one":          lambda: 'psspec ' + self.file + ' -example "' + '|'.join([i for i in self.selected_testnames]) + '"',
-            },
-            "clojure": {
-                "load":              lambda: '(load-file "' + self.file.replace("\\","/") + '")',
-                "line":              lambda: self.clojure_current_form,
-                "cd":                lambda: self.clojure_cd,
-            },
-            "ruby": {
-                "test_one_pattern": """^\s*it\s+(?:'|")(.*)(?:'|")\s+do\s*$""",
-                "test":              lambda: 'ruby  -I test'+os.pathsep+'lib ' + self.file.replace("\\","/") ,
-                "load":              lambda: 'load "' + self.file_name.replace("\\","/") + '"',
-                "run":               lambda: 'ruby -I lib ' + self.file,
-                "test_one":          lambda: 'ruby -I lib' + os.pathsep +'test ' + self.file + ' --name "/' + '|'.join([ '^test_\d{4}_'+i+'$' for i in self.selected_testnames]) +'/"',
-                                     # ruby -I lib;test test\couch_test.rb --name /^test_\d{4}_describe1$|^test_\d{4}_describe2$/"
-            },
-            "python": {
-                "run":               lambda: 'python ' + self.file,
-                "load":              lambda: 'exec(open("'+self.file+'").read())',
-            },
-            "markdown": {
-                "load": lambda: "pandoc -r markdown_github+footnotes+grid_tables -o \"" + re.sub("\..+$",".docx",self.file) + "\" \"" + self.file +"\"",
-                "run":  lambda: self.ops_lang.get("markdown").get("load")() + " && \"" + re.sub("\..+$",".docx",self.file) + "\"",
-            },
-            "fsharp": {
-                # "line": lambda: self.line + ";\;",
-                "line": lambda: self.line + ";;",
-                # "load": lambda: "#load \"" + self.file_name + "\";\;",
-                "load": lambda: "#load \"" + self.file_name + "\";;",
-                "lineuncomment": lambda s: re.sub(r"^\s*//\s*","",s), # strip leading //
-            },
-            "dot": {
-                "run":               lambda: 'dot -Tpng -O ' + self.file,
-            }
-        }
-        self.ops_platform = {
-            "windows": {
-                "explorer": lambda: "explorer " + self.path,
-            }
-        }
-        self.ops = {
-                "cd":       lambda: 'cd "' + self.path + '"',
-                "line":     lambda: self.line,
-                "lineuncomment": lambda s: re.sub(r"^\s*(#|rem)\s*","",s), # strip leading #
-                "last":     lambda: self.history.entries[0],
-                "test?":    lambda: False,
-        }
+        methods = [
+            ("run    python _",     lambda: 'python ' + self.file),
+            ("load   python _",     lambda: 'exec(open("'+self.file+'").read())'),
 
-    def ops_get(self,operation):
-        return self.ops_lang.get(self.lang,{}).get(operation) \
-            or self.ops_platform.get(sublime.platform(),{}).get(operation) \
-            or self.ops.get(operation) \
-            or (lambda: "Cannot find operation '"+operation+"' for lang="+self.lang + ", Platform="+sublime.platform())
+            ("test?  powershell _",  lambda: re.match(".*\.tests\.ps1$",self.file_name)),
+            ("load   powershell _",  lambda: '. ' + self.file_name),
+            ("run    powershell _",  lambda: self.file_name),
+            ("test   powershell _",  lambda: 'psspec ' + self.file),
+            ("test1p powershell _",  """^\s*(?:it|It|describe|Describe)\s+(?:'|")(.*)(?:'|").*\{\s*$"""),
+            ("test1  powershell _",  lambda: 'psspec ' + self.file + ' -example "' + '|'.join([i for i in self.selected_testnames]) + '"'),
 
-    @property
+            ("load clojure _",   lambda: '(load-file "' + self.file.replace("\\","/") + '")'),
+
+            ("test   ruby _",   lambda: 'ruby  -I test'+os.pathsep+'lib ' + self.file.replace("\\","/") ),
+            ("load   ruby _",   lambda: 'load "' + self.file_name.replace("\\","/") + '"'),
+            ("run    ruby _",   lambda: 'ruby -I lib ' + self.file),
+            ("test1  ruby _",   lambda: 'ruby -I lib' + os.pathsep +'test ' + self.file + ' --name "/' + '|'.join([ '^test_\d{4}_'+i+'$' for i in self.selected_testnames]) +'/"'),
+                                # ruby -I lib;test test\couch_test.rb --name /^test_\d{4}_describe1$|^test_\d{4}_describe2$/"
+            ("test1p ruby _",   """^\s*it\s+(?:'|")(.*)(?:'|")\s+do\s*$"""),
+            ("load markdown _", lambda: "pandoc -r markdown_github+footnotes+grid_tables -o \"" + re.sub("\..+$",".docx",self.file) + "\" \"" + self.file +"\""),
+            ("run  markdown _",  lambda: self.ops_lang.get("markdown").get("load")() + " && \"" + re.sub("\..+$",".docx",self.file) + "\""),
+            ("load          fsharp _", lambda: "#load \"" + self.file_name + "\";;"),
+
+            ("run dot _", lambda: 'dot -Tpng -O ' + self.file),
+
+            ("explorer _ windows", lambda: "explorer " + self.path),
+
+            ("cd clojure _",   lambda: self.cd_clojure),
+            ("cd _       _",   lambda: 'cd "' + self.path + '"'),
+
+            ("line clojure _",   lambda: self.line_clojure),
+            ("line fsharp  _",   lambda: self.line() + ";;"),
+            ("line _       _",  self.line),
+
+            ("lineuncomment fsharp _", lambda s: re.sub(r"^\s*//\s*","",s)), # strip leading //
+            ("lineuncomment _ _", lambda s: re.sub(r"^\s*(#|rem)\s*","",s)), # strip leading #
+
+            ("last  _ _",    lambda: self.history.entries[0]),
+            ("test? _ _",    lambda: False),
+            ("_ _ _", lambda: print("my method not found"))
+        ]
+        self.methods  = map( prep_data,methods )
+
+    def ops_get(self,method):
+        pattern = method + " " + self.lang +  " " + sublime.platform()
+        f = next(o for o in self.methods if re.match(o[0],pattern))
+        return f[1]
+
     def line(self):
         for region in self.view.sel():
             if region.empty():
@@ -267,7 +263,7 @@ class Er:
                 return self.view.substr(region)
 
     @property
-    def clojure_current_form(self):
+    def line_clojure(self):
         opening = []
         regions = self.view.find_all("^\(",fmt="$1",extractions=opening)
         for i,region in enumerate(regions[:-1]):
@@ -281,7 +277,7 @@ class Er:
         return "".join(forms)
 
     @property
-    def clojure_cd(self):
+    def cd_clojure(self):
         ns = self.view.find(r"\(\s*ns [\w\.]+", 0)
         return self.view.substr(ns) + ")"
 
@@ -289,7 +285,7 @@ class Er:
     def testnames(self):
         "( (region, 'name'),... )"
         testnames = []
-        regions = self.view.find_all(self.ops_get("test_one_pattern"),fmt="$1",extractions=testnames)
+        regions = self.view.find_all(self.ops_get("test1p"),fmt="$1",extractions=testnames)
         regions[0].a  = 0
         regions[-1].b = self.view.size()
         for i,region in enumerate(regions[:-1]):
