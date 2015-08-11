@@ -8,6 +8,8 @@
        "keys": ["ctrl+shift+s"],"command": "extern_repl_ops" ,"args": {"what": "last"}},
   { "caption": "ExternalREPL: show command history",
        "keys": ["ctrl+shift+h"    ], "command": "extern_repl_history" },
+  { "caption": "ExternalREPL: run Custom Command",
+       "keys": ["ctrl+shift+z"    ], "command": "extern_repl_customcommand" },
 //run
   { "caption": "ExternalREPL: load/source file",
        "keys": ["ctrl+shift+."],"command": "extern_repl_ops" ,"args": {"what": "load"}},

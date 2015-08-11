@@ -30,6 +30,17 @@ class ExternReplHistory(sublime_plugin.TextCommand):
         if (x != -1):
             self.er.command(self.er.history.entries[x])
 
+class ExternReplCustomcommand(sublime_plugin.TextCommand):
+    "runs the command from the history"
+    def run(self, edit):
+        init_er(self)
+        self.items = sublime.load_settings("ExternalRepl.custom_commands").get(sublime.platform())
+        self.view.window().show_quick_panel([i[0] for i in self.items],self.select)
+
+    def select(self, x):
+        if (x != -1):
+            self.er.command(self.items[x][1])
+
 class ExternReplFile(sublime_plugin.TextCommand):
     "opens the file or webpage in current line"
     def run(self, edit):
