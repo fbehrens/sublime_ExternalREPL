@@ -18,7 +18,7 @@ class ExternReplOps(sublime_plugin.TextCommand):
             self.view.run_command("save")
         init_er(self)
         command = self.er.ops_get(what)()
-        print(command)
+        print(what+"->"+command)
         self.er.command(command)
 
 class ExternReplHistory(sublime_plugin.TextCommand):
@@ -169,8 +169,8 @@ class History:
 
 # replaces _ with \w+ and reduces whitespace to one single
 def prep_data(a):
-    f = a[0].replace("_","\w+")
-    f = re.sub(r'\s+', " ", f)
+    f = a[0].replace("_","\w+") # _ => \w+
+    f = re.sub(r'\s+', " ", f)  # '    ' => ' '
     return (f,a[1])
 # assert prep_data(("a  _",41)) ==  ("a \w+",41)  , "works"
 
@@ -223,7 +223,8 @@ class Er:
             ("test1p ruby _",   """^\s*it\s+(?:'|")(.*)(?:'|")\s+do\s*$"""),
             ("load markdown _", lambda: "pandoc -r markdown_github+footnotes+grid_tables -o \"" + re.sub("\..+$",".docx",self.file) + "\" \"" + self.file +"\""),
             ("run  markdown _",  lambda: self.ops_lang.get("markdown").get("load")() + " && \"" + re.sub("\..+$",".docx",self.file) + "\""),
-            ("load          fsharp _", lambda: "#load \"" + self.file_name + "\";;"),
+
+            ("load   fsharp _", lambda: "#load \"" + self.file_name + "\";;"),
 
             ("run dot _", lambda: 'dot -Tpng -O ' + self.file),
 
@@ -240,14 +241,15 @@ class Er:
             ("lineuncomment _ _", lambda s: re.sub(r"^\s*(#|rem)\s*","",s)), # strip leading #
 
             ("last  _ _",    lambda: self.history.entries[0]),
-            ("_ _ _", lambda: print("my method not found"))
+            ("istest _ _",   lambda: False),
         ]
-        self.methods  = map( prep_data,methods )
+        self.methods  = list(map( prep_data,methods ))
 
     def ops_get(self,method):
-        pattern = method + " " + self.lang +  " " + sublime.platform()
-        f = next(o for o in self.methods if re.match(o[0],pattern))
-        return f[1]
+        string = method + " " + self.lang +  " " + sublime.platform()
+        print("opsget: "+string)
+        f =  next(pl[1] for pl in self.methods if re.match( pl[0], string))
+        return f
 
     def line(self):
         for region in self.view.sel():
