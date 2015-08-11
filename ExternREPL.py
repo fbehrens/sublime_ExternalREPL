@@ -6,7 +6,7 @@ class ExternReplUp(sublime_plugin.TextCommand):
     def run(self, edit):
         self.view.run_command("save")
         if sublime.platform() == 'windows':
-            Popen('ConEmuC -GuiMacro:0 Keys("Up");Paste(0,"\\n")')
+            Popen('ConEmuC -GuiMacro:0 Keys("Up");paste(2,"\\n")')
         else:
             command= 'tmux send-keys -t repl Up C-m'
             print("Command = " + command)
@@ -308,7 +308,7 @@ class Er:
         quoted = command.replace('\\','\\\\')\
                         .replace('"','\\"')
         if sublime.platform() == 'windows':
-            command = 'ConEmuC -GuiMacro:0 Paste(0,"' + quoted + '\\n")'
+            command = 'ConEmuC -GuiMacro:0 paste(2,"' + quoted + '\\n")'
             Popen(command)
         else:
             # Multiline with tmux needs multiple commands
