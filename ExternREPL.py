@@ -62,7 +62,7 @@ class ExternReplRefresh(sublime_plugin.TextCommand):
             return True
 
     def test(self):
-        if (self.er.ops_get('test?')()):
+        if (self.er.ops_get('istest')()):
             print("run tests")
             self.er.command(self.er.ops_get('test')())
             return True
@@ -206,7 +206,7 @@ class Er:
             ("run    python _",     lambda: 'python ' + self.file),
             ("load   python _",     lambda: 'exec(open("'+self.file+'").read())'),
 
-            ("test?  powershell _",  lambda: re.match(".*\.tests\.ps1$",self.file_name)),
+            ("istest  powershell _",  lambda: re.match(".*\.tests\.ps1$",self.file_name)),
             ("load   powershell _",  lambda: '. ' + self.file_name),
             ("run    powershell _",  lambda: self.file_name),
             ("test   powershell _",  lambda: 'psspec ' + self.file),
@@ -240,7 +240,6 @@ class Er:
             ("lineuncomment _ _", lambda s: re.sub(r"^\s*(#|rem)\s*","",s)), # strip leading #
 
             ("last  _ _",    lambda: self.history.entries[0]),
-            ("test? _ _",    lambda: False),
             ("_ _ _", lambda: print("my method not found"))
         ]
         self.methods  = map( prep_data,methods )
