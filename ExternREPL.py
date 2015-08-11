@@ -316,7 +316,7 @@ class Er:
             for line in quoted.split('\n'):
                 line = re.sub(r";$","\\;",line)   # quote ; at end of line
                 line = re.sub(r"\$","\\\$", line) # quote $
-                command = 'tmux send-keys -t repl "' + line + '"'
+                command = 'tmux send-keys -l -t repl "' + line + '"'
                 print(command)
                 Popen(command,shell=True)
                 Popen('tmux send-keys -t repl C-m',shell=True)
