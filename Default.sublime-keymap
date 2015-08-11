@@ -17,7 +17,7 @@
   { "caption": "ExternalREPL: run testfile",
        "keys": ["ctrl+shift+t"],"command": "extern_repl_ops" ,"args": {"what": "test"}},
   { "caption": "ExternalREPL: run selected test",
-       "keys": ["ctrl+shift+o"],"command": "extern_repl_ops" ,"args": {"what": "test_one"}},
+       "keys": ["ctrl+shift+o"],"command": "extern_repl_ops" ,"args": {"what": "test1"}},
   { "caption": "ExternalREPL: switch between test and file",
        "keys": ["ctrl+shift+'"],"command": "extern_repl_alternate"},
 //misc
