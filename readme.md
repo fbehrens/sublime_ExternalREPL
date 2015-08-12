@@ -1,18 +1,25 @@
+# What it is and how it works
+This plugin is designed to optimize an interactive programmin workflow, in which you are working in the editor and a console window.
+There you are editing some programm in the editor, and then run it from the console. 
+Or you are developing in a TDD fashion, so you run some tests from the console. 
+Or you try out some 
+
 ## Installation 
+### of this plugin  
 * Install [Sublime Text 3](http://www.sublimetext.com/3)
 * Install [Package Control](https://packagecontrol.io/installation)
 * Install this Plugin from Sublime with `CTrl-Shift-P / Package Control: Install Package / ExternalREPL`
 
-### windows
-Installation:
+### install console
+On Windows install ConEmu
+On Linux or OSX install Tmux 
+
 * Add Sublime Directory to Path. This adds the `subl` command.
+
 * Adjust ConEmu Settings
 	* deactivate `Keys & Macro/Paste/Confirm <Enter> keypress`
 ![ConEmu Settings](images/ConEmuSettings.png)
 Plugin send command to Konsole with  'ConEmuC -GuiMacro:0 Paste(0,"command\\n")'
-
-Start a new session:
-Start sublime from ConEmu with `subl`. This makes sure that ConEmuC is on path 
 
 ### Linux
 * Installation 
@@ -44,14 +51,15 @@ It is possible to execute only the selected test.
 There is a convention for naming of testfiles. This makes it possible to switch between implementation and tests.
 The commands are run from the root of the sublime folder, so your project directory needs to be in the sublime side bar.
 
-|  Language  | comment |      run      |     load    | test framework |      test     |            test_one           |     testfile     |
-|------------|---------|---------------|-------------|----------------|---------------|-------------------------------|------------------|
-| powershell | #       | <file>        | . <file>    | psspec         | psspec <file> | psspec <file> -example <name> | <file>.tests.ps1 |
-| ruby       | #       | load '<file>' | ruby <file> | minitest       |               |                               |                  |
-| fsharp     | //      |               |             |                |               |                               |                  |
-| clojure    | ;       |               |             |                |               |                               |                  |
-| dot        |         | dot           |             |                |               |                               |                  |
-| markdown   |         | pandoc -> doc |             |                |               |                               |                  |
+|  Language  | comment |      run       |     load    | test framework |      test     |            test_one           |     testfile     |
+|------------|---------|----------------|-------------|----------------|---------------|-------------------------------|------------------|
+| powershell | #       | <file>         | . <file>    | psspec         | psspec <file> | psspec <file> -example <name> | <file>.tests.ps1 |
+| ruby       | #       | ruby <file>    | load <file> | minitest       |               |                               |                  |
+| gemfile    |         | bundle install |             |                |               |                               |                  |
+| fsharp     | //      |                |             |                |               |                               |                  |
+| clojure    | ;       |                |             |                |               |                               |                  |
+| dot        |         | dot            |             |                |               |                               |                  |
+| markdown   |         | pandoc -> doc  |             |                |               |                               |                  |
 
 `cs-.` load file  
 `F5`   run file   

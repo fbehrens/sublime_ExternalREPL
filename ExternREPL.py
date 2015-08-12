@@ -202,16 +202,21 @@ class Er:
             self.path = folders[0]
             self.file = self.file_name[len(self.path)+1:]
         self.history = History(self.path)
-        scopes = self.view.scope_name(self.view.sel()[0].begin()) # source.python meta.structure.list.python punctuation.definition.list.begin.python
-        # print(scopes)
-        langs = ["fsharp","python","powershell","ruby","clojure","markdown","dot"]
-        match = [l for l in langs if l in scopes]
 
-        self.lang = "unknown"
-        if match:
-            self.lang = match[0]
+
+        if self.file == "Gemfile":
+            self.lang = "gemfile"
         else:
-            print("Cant find lang for scopes")
+            scopes = self.view.scope_name(self.view.sel()[0].begin()) # source.python meta.structure.list.python punctuation.definition.list.begin.python
+            # print(scopes)
+            langs = ["fsharp","python","powershell","ruby","clojure","markdown","dot"]
+            match = [l for l in langs if l in scopes]
+
+            self.lang = "unknown"
+            if match:
+                self.lang = match[0]
+            else:
+                print("Cant find lang for scopes")
 
         methods = [
             ("run    python _",     lambda: 'python ' + self.file),
@@ -228,6 +233,7 @@ class Er:
 
             ("test   ruby _",   lambda: 'ruby  -I test'+os.pathsep+'lib ' + self.file.replace("\\","/") ),
             ("load   ruby _",   lambda: 'load "' + self.file_name.replace("\\","/") + '"'),
+            ("run    gemfile _",   lambda: 'bundle install'),
             ("run    ruby _",   lambda: 'ruby -I lib ' + self.file),
             ("test1  ruby _",   lambda: 'ruby -I lib' + os.pathsep +'test ' + self.file + ' --name "/' + '|'.join([ '^test_\d{4}_'+i+'$' for i in self.selected_testnames]) +'/"'),
                                 # ruby -I lib;test test\couch_test.rb --name /^test_\d{4}_describe1$|^test_\d{4}_describe2$/"
