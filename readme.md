@@ -36,7 +36,7 @@ Windows: 7, 8.1
 ConEmu: 150513
 
 ## Usage
-Start session with `tmux new s repl`.
+Start session with `tmux new -s repl`.
 Start sublime from your console using the `subl` command.
 `Command()-Shift P` and typing `External` shows the commands. 
 Hotkeys are shown via `F1`
