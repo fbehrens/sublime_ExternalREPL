@@ -8,6 +8,19 @@ def prep_data(a):
     return (f,a[1])
 # assert prep_data(("a  _",41)) ==  ("a \w+",41)
 
+def extract_http(s):
+    m = re.search("https?://\S*",s)
+    if m:
+        return(m.group(0))
+# assert extract_http('a http://foo b') == 'http://foo '
+
+def extract_file(s):
+    "finds first word with / or \\"
+    m = re.search('\S*[\\\\/]\S*',s)
+    if m:
+        return m.group(0)
+# assert extract_file("a f/d b") == "f/d"
+
 class ExternReplSelfTest(sublime_plugin.TextCommand):
     def run(self, edit):
         init_er(self)
@@ -56,13 +69,19 @@ class ExternReplFile(sublime_plugin.TextCommand):
     "opens the file or webpage in current line"
     def run(self, edit):
         init_er(self)
-        file = self.er.line
-        if (re.match("^http",file)):
-            print("browse to file")
-            Popen("chrome "+file)
+        lc = self.er.line_content
+        url = extract_http(lc)
+        if url:
+            c = self.er.ops_get("chrome")(url=url)
         else:
-            print("opening "+file)
-            self.view.window().open_file(file)
+            file = extract_file(lc)
+            if file:
+                c = "subl " + file
+        if c:
+            print(c)
+            self.er.command(c)
+        else:
+            print("can't detect url or file in " + lc )
 
 class ExternReplRefresh(sublime_plugin.TextCommand):
     "invoked be F5, new version of run"
@@ -143,7 +162,7 @@ cs-EN selected                 cs-. load file  cs-t run testfile             cs-
 c-up  <up> last repl command   f5   run file   cs-o excecute selected test   cs-1 open explorer
 cs-s  last editor command                      cs-'      switch code<->test  cs-2 dublicate file
 cs-h  execute from history                                                   f2   rename
-                                                                             cs-3 open file on line
+                                                                             cs-3 open file or http:// on line
                                                                              f1   show shortkeys
                                                                              cs-4 restructure mdTOC
         """
@@ -263,6 +282,7 @@ class Er:
 
             ("last  _ _",    lambda: self.history.entries[0]),
             ("istest _ _",   lambda: False),
+            ("chrome _ _",   lambda **a: "chrome " + a['url'] ),
         ]
         self.methods  = list(map( prep_data,methods ))
 
@@ -271,6 +291,12 @@ class Er:
         print("opsget: "+string)
         f =  next(pl[1] for pl in self.methods if re.match( pl[0], string))
         return f
+
+    @property
+    def line_content(self):
+        region = self.view.sel()[0]
+        line = self.view.line(region)
+        return self.view.substr(line)
 
     def line(self):
         for region in self.view.sel():
