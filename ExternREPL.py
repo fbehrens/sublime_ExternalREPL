@@ -1,6 +1,13 @@
 import sublime, sublime_plugin, re, shutil, functools, os
 from subprocess import Popen, call
 
+# replaces _ with \w+ and reduces whitespace to one single
+def prep_data(a):
+    f = a[0].replace("_","\w+") # _ => \w+
+    f = re.sub(r'\s+', " ", f)  # '    ' => ' '
+    return (f,a[1])
+# assert prep_data(("a  _",41)) ==  ("a \w+",41)
+
 class ExternReplSelfTest(sublime_plugin.TextCommand):
     def run(self, edit):
         init_er(self)
@@ -182,14 +189,6 @@ class History:
         seen = set()
         seen_add = seen.add
         self.entries = [ x for x in self.entries if x not in seen and not seen_add(x)]
-
-# replaces _ with \w+ and reduces whitespace to one single
-def prep_data(a):
-    f = a[0].replace("_","\w+") # _ => \w+
-    f = re.sub(r'\s+', " ", f)  # '    ' => ' '
-    return (f,a[1])
-# assert prep_data(("a  _",41)) ==  ("a \w+",41)  , "works"
-
 
 class Er:
 
