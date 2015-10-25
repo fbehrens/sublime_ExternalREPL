@@ -37,4 +37,7 @@
        "keys": ["f1"],"command": "extern_repl_show_output" },
   { "caption": "ExternalREPL: Restructure Markdown Table of Content (req ruby)",
        "keys": ["ctrl+shift+4"],"command": "extern_repl_markdown_toc" },
- ]
+  { "caption": "ExternalREPL: SelfTest",
+       "keys": ["ctrl+shift+/"],"command": "extern_repl_self_test" },
+]
+

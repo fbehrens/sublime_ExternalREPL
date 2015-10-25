@@ -1,6 +1,11 @@
 import sublime, sublime_plugin, re, shutil, functools, os
 from subprocess import Popen, call
 
+class ExternReplSelfTest(sublime_plugin.TextCommand):
+    def run(self, edit):
+        init_er(self)
+        print("SelfTest")
+
 class ExternReplUp(sublime_plugin.TextCommand):
     "sends up arrow"
     def run(self, edit):
