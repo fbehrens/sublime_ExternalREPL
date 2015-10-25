@@ -30,7 +30,6 @@ class ExternReplOps(sublime_plugin.TextCommand):
             self.view.run_command("save")
         init_er(self)
         command = self.er.ops_get(what)()
-        print(what+"->"+command)
         self.er.command(command)
 
 class ExternReplHistory(sublime_plugin.TextCommand):
@@ -325,6 +324,7 @@ class Er:
         return acc
 
     def command(self,command):
+        print("command:"+command)
         self.history.append(command)
         # \ => \\ | " => \" | remove \n
         quoted = command.replace('\\','\\\\')\
