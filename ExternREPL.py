@@ -9,10 +9,14 @@ def prep_data(a):
 # assert prep_data(("a  _",41)) ==  ("a \w+",41)
 
 def extract_http(s):
+    m = re.search('\[.*\]\((.*)\)',s)
+    if m:
+        return m.group(1)
     m = re.search("https?://\S*",s)
     if m:
         return(m.group(0))
-# assert extract_http('a http://foo b') == 'http://foo '
+# assert extract_http('a http://foo b') == 'http://foo'
+# assert extract_http('[Die Foo Seite](htt://foo)') == 'htt://foo'
 
 def extract_file(s):
     "finds first word with / or \\"
