@@ -249,6 +249,7 @@ class Er:
             ("run dot _", lambda: 'dot -Tpng -O ' + self.file),
 
             ("explorer _ windows", lambda: "explorer " + self.path),
+            ("explorer _ osx"    , lambda: "open "     + self.path),
 
             ("cd clojure _",   lambda: self.cd_clojure),
             ("cd _       _",   lambda: 'cd "' + self.path + '"'),
