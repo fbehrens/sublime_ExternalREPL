@@ -102,6 +102,17 @@ Do this from another console and
 * From Tmux you can detach with `Prefix(C-b) d`.
 * and reattach to your tmux session with `tmux a -t repl`
 * [Making the clipboard work between iTerm2, tmux, vim and OS X.](http://evertpot.com/osx-tmux-vim-copy-paste-clipboard/)
+    
+    tmux ls                   # list sessions
+    tmux kill-session -t name # kill session
+    tmux new -s repl          # create new session with name repl
+    tmux attach -t repl       # attach to repl
+
+## using tmux with iTerm (on OSX)
+iTerm has Tmux integration in the way that it can run enter tmux mode, where all windows
+/ split panes are tmux windows / panes. Why is it so slow ?
+
+    tmux -CC new -s repl
 
 ## License    
 MIT-License (see license.txt)
