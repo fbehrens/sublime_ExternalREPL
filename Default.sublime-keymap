@@ -1,4 +1,6 @@
 [
+//git
+  { "keys": ["ctrl+shift+g"], "command": "git_gui" },
 //repl
   { "caption": "ExternalREPL: current line",
        "keys": ["ctrl+shift+enter"],"command": "extern_repl_ops" ,"args": {"what": "line"}},

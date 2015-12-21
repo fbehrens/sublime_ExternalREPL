@@ -1,6 +1,22 @@
 import sublime, sublime_plugin, re, shutil, functools, os
 from subprocess import Popen, call
 
+class GitGui(sublime_plugin.TextCommand):
+  def run(self, edit,directory=None):
+    if directory == None:
+      directory = os.path.dirname( self.view.file_name())
+    if os.name == "posix":
+      self.view.window().run_command("exec",{
+        "cmd": [ "git", "gui" ],
+        "working_dir": directory
+      })
+    else:
+      os.chdir( directory )
+      Popen("git gui")
+      # git_install_root = "C:\\Program Files (x86)\\Git\\"
+      # Popen(["%sbin\\wish.exe" % (git_install_root),"%slibexec\\git-core\\git-gui" % (git_install_root)])
+
+
 # replaces _ with \w+ and reduces whitespace to one single
 def prep_data(a):
     f = a[0].replace("_","\w+") # _ => \w+
