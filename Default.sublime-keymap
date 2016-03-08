@@ -1,4 +1,5 @@
 [
+  { "keys": ["ctrl+shift+a"], "command": "test_subl" },
 //git
   { "keys": ["ctrl+shift+g"], "command": "git_gui" },
 //repl

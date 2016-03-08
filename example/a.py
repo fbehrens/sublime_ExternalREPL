@@ -1,7 +1,10 @@
 def foo():
     return "bar"
 
+## comment
 # print(foo())
+# print("#")
+
 
 
 ml = """line 1

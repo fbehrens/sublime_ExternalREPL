@@ -1,6 +1,17 @@
 import sublime, sublime_plugin, re, shutil, functools, os
 from subprocess import Popen, call
 
+class TestSubl(sublime_plugin.TextCommand):
+  def run(self, edit,directory=None):
+    base = r'C:\tools\conemu\160207\ConEmu.exe -LoadCfgFile C:\Dropbox\dotfiles\preferences\ConEmu.xml -cmdlist '
+    command = r'set foo=bar && cmd -cur_console:s3TH:d:"c:\"' # split [3Tab] [50] H|V
+    # command = r'%systemroot%\system32\WindowsPowerShell\v1.0\powershell.exe -new_console:d:"%scripts2%\libwba":t:"PS64":P:<powerShell>'
+    # command = r'cmd -cur_console:sTVn'
+    self.view.erase_status('foo')
+    sublime.status_message('Hello')
+    print(42)
+    # Popen(base+command)
+
 class GitGui(sublime_plugin.TextCommand):
   def run(self, edit,directory=None):
     if directory == None:
