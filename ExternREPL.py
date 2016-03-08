@@ -298,7 +298,7 @@ class Er:
             ("line _       _",  self.line),
 
             ("lineuncomment fsharp _", lambda s: re.sub(r"^\s*//\s*","",s)), # strip leading //
-            ("lineuncomment _ _", lambda s: re.sub(r"^\s*(#|rem)\s*","",s)), # strip leading #
+            ("lineuncomment _ _"    , lambda s: re.sub(r'^# ', r'', s,0,re.MULTILINE)), # strip leading #
 
             ("last  _ _",    lambda: self.history.entries[0]),
             ("istest _ _",   lambda: False),
@@ -321,6 +321,7 @@ class Er:
     def line(self):
         for region in self.view.sel():
             if region.empty():
+                # select current line
                 line = self.view.line(region)
                 line_contents = self.view.substr(line)
                 line_below = sublime.Region(line.b+1)
@@ -328,6 +329,7 @@ class Er:
                 self.view.sel().add(line_below)
                 return self.ops_get("lineuncomment")(line_contents)
             else:
+                return self.ops_get("lineuncomment")(self.view.substr(region))
                 return self.view.substr(region)
 
     @property
