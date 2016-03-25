@@ -4,7 +4,7 @@
   { "keys": ["ctrl+shift+g"], "command": "git_gui" },
 //repl
   { "caption": "ExternalREPL: current line",
-       "keys": ["ctrl+shift+enter"],"command": "extern_repl_ops" ,"args": {"what": "line"}},
+       "keys": ["alt+enter"],"command": "extern_repl_ops" ,"args": {"what": "line"}},
   { "caption": "ExternalREPL: <up> last command in repl",
        "keys": ["ctrl+up"         ], "command": "extern_repl_up" },
   { "caption": "ExternalREPL: last command",
