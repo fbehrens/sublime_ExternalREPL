@@ -3,6 +3,8 @@
 //git
   { "keys": ["ctrl+shift+g"], "command": "git_gui" },
 //repl
+  { "caption": "ExternalREPL: inspect",
+       "keys": ["ctrl+shift+i"],"command": "extern_repl_ops" ,"args": {"what": "inspect"}},
   { "caption": "ExternalREPL: current line",
        "keys": ["alt+enter"],"command": "extern_repl_ops" ,"args": {"what": "line"}},
   { "caption": "ExternalREPL: <up> last command in repl",

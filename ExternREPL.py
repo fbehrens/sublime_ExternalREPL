@@ -189,11 +189,11 @@ class ExternReplShowOutput(sublime_plugin.WindowCommand):
     def run(self):
         text="""
 repl                           run             test                          misc
-cs-EN selected                 cs-. load file  cs-t run testfile             cs-c change directory/ns
+a-EN  selected                 cs-. load file  cs-t run testfile             cs-c change directory/ns
 c-up  <up> last repl command   f5   run file   cs-o excecute selected test   cs-1 open explorer
 cs-s  last editor command                      cs-'      switch code<->test  cs-2 dublicate file
 cs-h  execute from history                                                   f2   rename
-                                                                             cs-3 open file or http:// on line
+cs-i  inspect                                                                cs-3 open file or http:// on line
                                                                              f1   show shortkeys
                                                                              cs-4 restructure mdTOC
         """
@@ -281,6 +281,7 @@ class Er:
             ("test   powershell _",  lambda: 'psspec ' + self.file),
             ("test1p powershell _",  """^\s*(?:it|It|describe|Describe)\s+(?:'|")(.*)(?:'|").*\{\s*$"""),
             ("test1  powershell _",  lambda: 'psspec ' + self.file + ' -example "' + '|'.join([i for i in self.selected_testnames]) + '"'),
+            ("inspect powershell _",  lambda: "pp (" + self.line()+")" ),
 
             ("load clojure _",   lambda: '(load-file "' + self.file.replace("\\","/") + '")'),
 
