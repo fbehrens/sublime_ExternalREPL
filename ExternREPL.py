@@ -278,9 +278,9 @@ class Er:
             ("istest  powershell _",  lambda: re.match(".*\.tests\.ps1$",self.file_name)),
             ("load   powershell _",  lambda: '. ' + self.file_name),
             ("run    powershell _",  lambda: self.file_name),
-            ("test   powershell _",  lambda: 'psspec ' + self.file),
+            ("test   powershell _",  lambda: 'psspec .\\' + self.file),
             ("test1p powershell _",  """^\s*(?:it|It|describe|Describe)\s+(?:'|")(.*)(?:'|").*\{\s*$"""),
-            ("test1  powershell _",  lambda: 'psspec ' + self.file + ' -example "' + '|'.join([i for i in self.selected_testnames]) + '"'),
+            ("test1  powershell _",  lambda: 'psspec .\\' + self.file + ' -example "' + '|'.join([i for i in self.selected_testnames]) + '"'),
             ("inspect powershell _",  lambda: "pp (" + self.line()+")" ),
 
             ("load clojure _",   lambda: '(load-file "' + self.file.replace("\\","/") + '")'),
