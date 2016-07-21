@@ -7,6 +7,8 @@
        "keys": ["ctrl+shift+i"],"command": "extern_repl_ops" ,"args": {"what": "inspect"}},
   { "caption": "ExternalREPL: current line",
        "keys": ["alt+enter"],"command": "extern_repl_ops" ,"args": {"what": "line"}},
+  // { "caption": "ExternalREPL: current line",
+  //      "keys": ["ctrl+shift+enter"],"command": "extern_repl_ops" ,"args": {"what": "line"}},
   { "caption": "ExternalREPL: <up> last command in repl",
        "keys": ["ctrl+up"         ], "command": "extern_repl_up" },
   { "caption": "ExternalREPL: last command",

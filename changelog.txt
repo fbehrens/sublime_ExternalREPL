@@ -1,4 +1,7 @@
-0.1.3 
+0.2.0
+  uncomment multiline selctions `^#`
+  Change mapping of running selection to Alt+Enter
+0.1.3
   quote ; at end of line with \ (tmux)
 0.1.2
   fix quoting of $ in tmux
@@ -8,10 +11,10 @@
   fixing quoting of ; in tmux
 0.0.4
   `ctrl-shift-l`: sends last command to external REPL (Windows only)
-  `ctrl-shift-s`: sends up-arrow and return to external REPL (Windows only) 
+  `ctrl-shift-s`: sends up-arrow and return to external REPL (Windows only)
 0.0.3
   change hotkey to ctrl+shift+enter
   add changelog
-0.0.2 
+0.0.2
   change Title and Description
 0.0.1

@@ -1,0 +1,16 @@
+Hi,
+
+I have changed the default mapping of running selection `current Line`
+form CTRL+Shift + ENTER
+to   Alt        + ENTER.
+
+The reason for this, that Visual Studio has same key for F# Interactive Window.
+
+If you want to keep the old key,
+add
+
+  { "caption": "ExternalREPL: current line",
+       "keys": ["ctrl+shift+enter"],"command": "extern_repl_ops" ,"args": {"what": "line"}},
+
+to your keymap.
+
