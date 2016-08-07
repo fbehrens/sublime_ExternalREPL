@@ -120,18 +120,7 @@ class ExternReplRefresh(sublime_plugin.TextCommand):
         if self.view.is_dirty():
             self.view.run_command("save")
         init_er(self)
-        self.manual_refresh() or self.test() or self.runn()
-
-    def manual_refresh(self):
-        # dictionary of {file: command ,... }
-        manual = {
-          os.environ["scripts2"] + "\\libwba\\functions.md":"ruby \\Dropbox\\sublime\\data\\packages\\ExternalREPL\\ruby\\psdoc.rb > %scripts2%\\libwba\\functions.md"
-        }
-        if (self.er.file_name in manual):
-            command = manual[self.er.file_name]
-            return_code = call(command, shell=True)
-            print ("manual refresh with: " + command + "(" + str(return_code) + ")")
-            return True
+        self.test() or self.runn()
 
     def test(self):
         if (self.er.ops_get('istest')()):
