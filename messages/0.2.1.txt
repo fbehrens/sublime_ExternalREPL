@@ -1,0 +1,16 @@
+Hi,
+
+I am cleaning up a little and the current `last repl command `
+form CTRL + up
+to   CTRL-SHIFT+s\.
+
+The reason for this, that CTRL-up is the default key for mission control on OSX.
+
+add
+
+  { "keys": ["ctrl+up"],"command": "extern_repl_up" }, //last repl command
+
+to your User/default.sublime-keymap
+to keep the old behaviour.
+
+

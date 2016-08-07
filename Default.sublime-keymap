@@ -6,7 +6,7 @@
 //repl
   { "keys": ["ctrl+shift+i"],"command": "extern_repl_ops" ,"args": {"what": "inspect"}}, //inspect
   { "keys": ["alt+enter"   ],"command": "extern_repl_ops" ,"args": {"what": "line"}}, //current line
-  { "keys": ["ctrl+up"     ],"command": "extern_repl_up" }, //last repl command
+  { "keys": ["ctrl+shift+s"],"command": "extern_repl_up" }, //last repl command
 
 //{ "keys": ["ctrl+shift+s"],"command": "extern_repl_ops" ,"args": {"what": "last"}}, // last commadn
   { "keys": ["ctrl+shift+h"],"command": "extern_repl_history" }, //show command history
