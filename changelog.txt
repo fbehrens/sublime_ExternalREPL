@@ -1,8 +1,9 @@
-0.2.1
+0.2.1 Cleanup
   change hotkey for last repl to ctrl+shift+s
   remove manual refresh
   remove SelfTest
-
+  remove Custom Command
+  remove History
 0.2.0
   uncomment multiline selctions `^#`
   Change mapping of running selection to Alt+Enter

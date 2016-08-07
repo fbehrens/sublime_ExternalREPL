@@ -1,7 +1,7 @@
 # this restructures the target file
 # no output piping is used because we don't want to render if there is an error
 source, target = ARGV
-md = IO.readlines(target)
+md  = IO.readlines(target)
 out = ""
 toc = IO.readlines(source).map do |line|
   if line =~ /^(.*)\((\d+),(\d+)\)/
@@ -13,14 +13,3 @@ toc = IO.readlines(source).map do |line|
   end
 end
 IO.write target, out
-
-<<HERE
-huhu
-# External REPL
-Sublime 3 Plugin to send lines of code to any REPL running in exteral Console.
-Works on Windows with ConEmu and on OSX/Linux with tmux
-## why
-- simple (20 loc)
-- Works on all platforms
-- with all repls
-HERE

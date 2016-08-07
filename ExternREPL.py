@@ -139,12 +139,14 @@ class ExternReplMarkdownToc(sublime_plugin.TextCommand):
         if re.compile( r'\.md$',re.I).search(file):
             #c:\project\file.tests.ps1
             toc = re.sub(r'\.md$',".md.toc",file)
-            command = "ruby "+sublime.packages_path()+"\\ExternalREPL\\ruby\\toc.rb "+file+" > "+toc
+            command = "ruby \"" + sublime.packages_path() + "/ExternalREPL/ruby/toc.rb\" "+file+" > "+toc
+            print(command)
             return_code = call(command, shell=True)
             self.view.window().open_file(toc)
         elif re.compile( r'\.md.toc$',re.I).search(file):
             md = re.sub(r'\.md\.toc$',".md",file)
-            command = "ruby "+sublime.packages_path()+"\\ExternalREPL\\ruby\\retoc.rb "+file+" "+md #+" > "+md
+            command = "ruby  \""+sublime.packages_path()+"/ExternalREPL/ruby/retoc.rb\" "+file+" "+md #+" > "+md
+            print(command)
             return_code = call(command, shell=True)
             self.view.window().open_file(md)
 
@@ -152,14 +154,13 @@ class ExternReplShowOutput(sublime_plugin.WindowCommand):
     "pipes textbuffer into command"
     def run(self):
         text="""
-repl                           run             test                          misc
-a-EN  selected                 cs-. load file  cs-t run testfile             cs-c change directory/ns
-c-up  <up> last repl command   f5   run file   cs-o excecute selected test   cs-1 open explorer
-cs-s  last editor command                      cs-'      switch code<->test  cs-2 dublicate file
-cs-h  execute from history                                                   f2   rename
-cs-i  inspect                                                                cs-3 open file or http:// on line
-                                                                             f1   show shortkeys
-                                                                             cs-4 restructure mdTOC
+repl                 run             test                          misc
+a-EN  selected       cs-. load file  cs-t run testfile             cs-c change directory/ns
+cs-s  last command   f5   run file   cs-o run selected test        cs-1 open explorer
+cs-i  inspect                        cs-' switch code<->test       cs-2 dublicate file
+                                                                   cs-3 open file or http:// on line
+                                                                   f1   show shortkeys
+                                                                   cs-4 restructure markdown headings
         """
         self.output_view = self.window.create_output_panel("exec")
         self.output_view.run_command('append', {'characters': text, 'force': True, 'scroll_to_end': True})

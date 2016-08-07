@@ -14,5 +14,5 @@
   { "caption": "ExternalREPL: move(rename) file"           ,"command": "extern_repl_move_file" },
   { "caption": "ExternalREPL: Open File on current Line"   ,"command": "extern_repl_file" },
   { "caption": "ExternalREPL: show shortkeys"              ,"command": "extern_repl_show_output" },
-  { "caption": "ExternalREPL: Chaneg Table of Content"     ,"command": "extern_repl_markdown_toc" },
+  { "caption": "ExternalREPL: Change Markdown Headings"    ,"command": "extern_repl_markdown_toc" },
 ]
