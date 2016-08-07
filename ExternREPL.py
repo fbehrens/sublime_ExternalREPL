@@ -52,11 +52,6 @@ def extract_file(s):
         return m.group(0)
 # assert extract_file("a f/d b") == "f/d"
 
-class ExternReplSelfTest(sublime_plugin.TextCommand):
-    def run(self, edit):
-        init_er(self)
-        print("SelfTest")
-
 class ExternReplUp(sublime_plugin.TextCommand):
     "sends up arrow"
     def run(self, edit):

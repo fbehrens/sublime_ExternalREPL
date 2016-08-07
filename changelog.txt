@@ -1,6 +1,7 @@
 0.2.1
   change hotkey for last repl to ctrl+shift+s
   remove manual refresh
+  remove SelfTest
 
 0.2.0
   uncomment multiline selctions `^#`

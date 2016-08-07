@@ -1,6 +1,5 @@
 [
   { "keys": ["ctrl+shift+a"],"command": "test_subl" }, // test
-  { "keys": ["ctrl+shift+/"],"command": "extern_repl_self_test" }, // self test
 //git
   { "keys": ["ctrl+shift+g"],"command": "git_gui" }, // git gui
 //repl
