@@ -7,8 +7,6 @@
   { "keys": ["alt+enter"   ],"command": "extern_repl_ops" ,"args": {"what": "line"}}, //current line
   { "keys": ["ctrl+shift+s"],"command": "extern_repl_up" }, //last repl command
 
-//{ "keys": ["ctrl+shift+s"],"command": "extern_repl_ops" ,"args": {"what": "last"}}, // last commadn
-  { "keys": ["ctrl+shift+h"],"command": "extern_repl_history" }, //show command history
   { "keys": ["ctrl+shift+z"],"command": "extern_repl_customcommand" }, //run Custom Command
 //run
   { "keys": ["ctrl+shift+."],"command": "extern_repl_ops" ,"args": {"what": "load"}},//load source file

@@ -71,15 +71,6 @@ class ExternReplOps(sublime_plugin.TextCommand):
         command = self.er.ops_get(what)()
         self.er.command(command)
 
-class ExternReplHistory(sublime_plugin.TextCommand):
-    "runs the command from the history"
-    def run(self, edit):
-        init_er(self)
-        self.view.window().show_quick_panel(self.er.history.entries, self.select )
-    def select(self, x):
-        if (x != -1):
-            self.er.command(self.er.history.entries[x])
-
 class ExternReplCustomcommand(sublime_plugin.TextCommand):
     "runs the command from the history"
     def run(self, edit):
@@ -203,26 +194,6 @@ class ExternReplMoveFile(sublime_plugin.TextCommand):
         except:
             sublime.status_message("Unable to rename")
 
-class History:
-    def __init__(self,project):
-        self.project = project
-        self.settings = sublime.load_settings("ExternalRepl.last-run")
-        self.all_entries = self.settings.get("historys") or {}
-        self.entries = self.all_entries.get( self.project) or []
-
-    def append(self,text):
-        self.entries.insert(0,text) # prepend
-        self.remove_dublicates()
-        self.all_entries[self.project] = self.entries
-        self.settings.set("historys", self.all_entries)
-        sublime.save_settings("ExternalRepl.last-run")
-
-    def remove_dublicates(self):
-        "while retaining order"
-        seen = set()
-        seen_add = seen.add
-        self.entries = [ x for x in self.entries if x not in seen and not seen_add(x)]
-
 class Er:
 
     def __init__(self,stc):
@@ -238,8 +209,6 @@ class Er:
         else:
             self.path = folders[0]
             self.file = self.file_name[len(self.path)+1:]
-        self.history = History(self.path)
-
 
         if self.file == "Gemfile":
             self.lang = "gemfile"
@@ -296,7 +265,6 @@ class Er:
             ("lineuncomment fsharp _", lambda s: re.sub(r"^\s*//\s*","",s)), # strip leading //
             ("lineuncomment _ _"    , lambda s: re.sub(r'^# ', r'', s,0,re.MULTILINE)), # strip leading #
 
-            ("last  _ _",    lambda: self.history.entries[0]),
             ("istest _ _",   lambda: False),
             ("chrome _ _",   lambda **a: "chrome " + a['url'] ),
         ]
@@ -370,7 +338,6 @@ class Er:
 
     def command(self,command):
         print("command:"+command)
-        self.history.append(command)
         # \ => \\ | " => \" | remove \n
         quoted = command.replace('\\','\\\\')\
                         .replace('"','\\"')

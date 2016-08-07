@@ -4,8 +4,6 @@
   { "caption": "ExternalREPL: inspect"                     ,"command": "extern_repl_ops" ,"args": {"what": "inspect"}},
   { "caption": "ExternalREPL: current line"                ,"command": "extern_repl_ops" ,"args": {"what": "line"}},
   { "caption": "ExternalREPL: <up> last command in repl"   ,"command": "extern_repl_up" },
-  { "caption": "ExternalREPL: last command"                ,"command": "extern_repl_ops" ,"args": {"what": "last"}},
-  { "caption": "ExternalREPL: show command history"        ,"command": "extern_repl_history" },
   { "caption": "ExternalREPL: load/source file"            ,"command": "extern_repl_ops" ,"args": {"what": "load"}},
   { "caption": "ExternalREPL: run file"                    ,"command": "extern_repl_refresh" },
   { "caption": "ExternalREPL: run testfile"                ,"command": "extern_repl_ops" ,"args": {"what": "test"}},
