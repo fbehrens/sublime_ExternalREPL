@@ -1,50 +1,30 @@
 [
-  { "keys": ["ctrl+shift+a"], "command": "test_subl" },
+  { "keys": ["ctrl+shift+a"],"command": "test_subl" }, // test
+  { "keys": ["ctrl+shift+/"],"command": "extern_repl_self_test" }, // self test
 //git
-  { "keys": ["ctrl+shift+g"], "command": "git_gui" },
+  { "keys": ["ctrl+shift+g"],"command": "git_gui" }, // git gui
 //repl
-  { "caption": "ExternalREPL: inspect",
-       "keys": ["ctrl+shift+i"],"command": "extern_repl_ops" ,"args": {"what": "inspect"}},
-  { "caption": "ExternalREPL: current line",
-       "keys": ["alt+enter"],"command": "extern_repl_ops" ,"args": {"what": "line"}},
-  // { "caption": "ExternalREPL: current line",
-  //      "keys": ["ctrl+shift+enter"],"command": "extern_repl_ops" ,"args": {"what": "line"}},
-  { "caption": "ExternalREPL: <up> last command in repl",
-       "keys": ["ctrl+up"         ], "command": "extern_repl_up" },
-  { "caption": "ExternalREPL: last command",
-       "keys": ["ctrl+shift+s"],"command": "extern_repl_ops" ,"args": {"what": "last"}},
-  { "caption": "ExternalREPL: show command history",
-       "keys": ["ctrl+shift+h"    ], "command": "extern_repl_history" },
-  { "caption": "ExternalREPL: run Custom Command",
-       "keys": ["ctrl+shift+z"    ], "command": "extern_repl_customcommand" },
+  { "keys": ["ctrl+shift+i"],"command": "extern_repl_ops" ,"args": {"what": "inspect"}}, //inspect
+  { "keys": ["alt+enter"   ],"command": "extern_repl_ops" ,"args": {"what": "line"}}, //current line
+  { "keys": ["ctrl+up"     ],"command": "extern_repl_up" }, //last repl command
+
+//{ "keys": ["ctrl+shift+s"],"command": "extern_repl_ops" ,"args": {"what": "last"}}, // last commadn
+  { "keys": ["ctrl+shift+h"],"command": "extern_repl_history" }, //show command history
+  { "keys": ["ctrl+shift+z"],"command": "extern_repl_customcommand" }, //run Custom Command
 //run
-  { "caption": "ExternalREPL: load/source file",
-       "keys": ["ctrl+shift+."],"command": "extern_repl_ops" ,"args": {"what": "load"}},
-  { "caption": "ExternalREPL: run file",
-       "keys": ["f5"],"command": "extern_repl_refresh" },
+  { "keys": ["ctrl+shift+."],"command": "extern_repl_ops" ,"args": {"what": "load"}},//load source file
+  { "keys": ["f5"          ],"command": "extern_repl_refresh" }, //run file
 //test
-  { "caption": "ExternalREPL: run testfile",
-       "keys": ["ctrl+shift+t"],"command": "extern_repl_ops" ,"args": {"what": "test"}},
-  { "caption": "ExternalREPL: run selected test",
-       "keys": ["ctrl+shift+o"],"command": "extern_repl_ops" ,"args": {"what": "test1"}},
-  { "caption": "ExternalREPL: switch between test and file",
-       "keys": ["ctrl+shift+'"],"command": "extern_repl_alternate"},
+  { "keys": ["ctrl+shift+t"],"command": "extern_repl_ops" ,"args": {"what": "test"}},//run testfile
+  { "keys": ["ctrl+shift+o"],"command": "extern_repl_ops" ,"args": {"what": "test1"}},//run selected test
+  { "keys": ["ctrl+shift+'"],"command": "extern_repl_alternate"},//switch test <-> file
 //misc
-  { "caption": "ExternalREPL: cd into project dir",
-       "keys": ["ctrl+shift+c"],"command": "extern_repl_ops" ,"args": {"what": "cd"}},
-  { "caption": "ExternalREPL: Open Project in Explorer",
-       "keys": ["ctrl+shift+1"],"command": "extern_repl_ops" ,"args": {"what": "explorer"}},
-  { "caption": "ExternalREPL: dublicate file",
-       "keys": ["ctrl+shift+2"],"command": "extern_repl_dublicate_file" },
-  // { "caption": "ExternalREPL: move(rename) file ",
-  //      "keys": ["f2"],"command": "extern_repl_move_file" },
-  { "caption": "ExternalREPL: Open File on current Line",
-       "keys": ["ctrl+shift+3"],"command": "extern_repl_file" },
-  { "caption": "ExternalREPL: show shortkeys",
-       "keys": ["f1"],"command": "extern_repl_show_output" },
-  { "caption": "ExternalREPL: Restructure Markdown Table of Content (req ruby)",
-       "keys": ["ctrl+shift+4"],"command": "extern_repl_markdown_toc" },
-  { "caption": "ExternalREPL: SelfTest",
-       "keys": ["ctrl+shift+/"],"command": "extern_repl_self_test" },
+  { "keys": ["ctrl+shift+c"],"command": "extern_repl_ops" ,"args": {"what": "cd"}},// cd
+  { "keys": ["ctrl+shift+1"],"command": "extern_repl_ops" ,"args": {"what": "explorer"}},// open
+  { "keys": ["ctrl+shift+2"],"command": "extern_repl_dublicate_file" }, // dublicate file
+  //"keys": ["f2"          ],"command": "extern_repl_move_file" }, //move(rename) file
+  { "keys": ["ctrl+shift+3"],"command": "extern_repl_file" },//Open File on current Line
+  { "keys": ["f1"          ],"command": "extern_repl_show_output" }, // show shortkeys
+  { "keys": ["ctrl+shift+4"],"command": "extern_repl_markdown_toc" }, //Restructure Markdown Table of Content (req ruby)
 ]
 
