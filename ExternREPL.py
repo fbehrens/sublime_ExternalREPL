@@ -99,13 +99,24 @@ class ExternReplRefresh(sublime_plugin.TextCommand):
 
     def test(self):
         if (self.er.ops_get('istest')()):
-            print("run tests")
             self.er.command(self.er.ops_get('test')())
             return True
 
     def runn(self):
         print("runn")
         self.er.command(self.er.ops_get('run')())
+
+class ExternReplTest(sublime_plugin.TextCommand):
+    "run associated test (CS-t)"
+    def run(self, edit):
+        if self.view.is_dirty():
+            self.view.run_command("save")
+        init_er(self)
+        if (self.er.ops_get('istest')()):
+            c = self.er.ops_get('test')()
+        else:
+            c = self.er.ops_get('testAlternate')()
+        self.er.command(c)
 
 class ExternReplAlternate(sublime_plugin.TextCommand):
     "switches from file to test and reverse"
@@ -222,6 +233,8 @@ class Er:
             ("load   powershell _",  lambda: '. ' + self.file_name),
             ("run    powershell _",  lambda: self.file_name),
             ("test   powershell _",  lambda: 'psspec .\\' + self.file),
+            ("testAlternate powershell _",  lambda: 'psspec .\\' + self.alternate(self.file)),
+
             ("test1p powershell _",  """^\s*(?:it|It|describe|Describe)\s+(?:'|")(.*)(?:'|").*\{\s*$"""),
             ("test1  powershell _",  lambda: 'psspec .\\' + self.file + ' -example "' + '|'.join([i for i in self.selected_testnames]) + '"'),
             ("inspect powershell _",  lambda: "pp (" + self.line()+")" ),

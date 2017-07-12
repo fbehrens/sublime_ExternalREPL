@@ -10,7 +10,7 @@
   { "keys": ["ctrl+shift+."],"command": "extern_repl_ops" ,"args": {"what": "load"}},//load source file
   { "keys": ["f5"          ],"command": "extern_repl_refresh" }, //run file
 //test
-  { "keys": ["ctrl+shift+t"],"command": "extern_repl_ops" ,"args": {"what": "test"}},//run testfile
+  { "keys": ["ctrl+shift+t"],"command": "extern_repl_test" },//run testfile
   { "keys": ["ctrl+shift+o"],"command": "extern_repl_ops" ,"args": {"what": "test1"}},//run selected test
   { "keys": ["ctrl+shift+'"],"command": "extern_repl_alternate"},//switch test <-> file
 //misc
